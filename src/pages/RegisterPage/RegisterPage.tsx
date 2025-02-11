@@ -1,6 +1,12 @@
 import { useState, FormEvent } from "react";
 
+import { Button, Fieldset, Input, Link, Stack } from "@chakra-ui/react";
+import { Field } from "components/ui/field";
+import { Center } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
+
 import styles from "./RegisterPage.module.css";
+import { apiClient } from "helpers/apiClient";
 
 export const RegisterPage = () => {
   const [username, setUsername] = useState<string>("");
@@ -8,7 +14,7 @@ export const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(""); // Очистка ошибки перед проверкой
 
@@ -17,66 +23,63 @@ export const RegisterPage = () => {
       return;
     }
 
+    await apiClient.post("/register", { username, password });
+
     console.log("Регистрация:", { username, password });
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Регистрация</h1>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleRegister} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="username" className={styles.label}>
-            Логин:
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.label}>
-            Пароль:
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword" className={styles.label}>
-            Подтвердите пароль:
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.button}>
-            Зарегистрироваться
-          </button>
-          <button
-            type="button"
-            className={styles.buttonSecondary}
-            onClick={() => (window.location.href = "/login")}
-          >
-            Войти
-          </button>
-        </div>
+    <Center paddingTop={20}>
+      <form action="#" className={styles.form} onSubmit={handleRegister}>
+        <Fieldset.Root size="lg" maxW="md">
+          <Stack>
+            <Fieldset.Legend>Регистрация</Fieldset.Legend>
+            <Fieldset.HelperText>
+              Пожалуйста, введите свои данные
+            </Fieldset.HelperText>
+            {error && <Fieldset.HelperText>{error}</Fieldset.HelperText>}
+          </Stack>
+
+          <Fieldset.Content>
+            <Field label="Логин">
+              <Input
+                name="login"
+                value={username}
+                required
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Field>
+
+            <Field label="Пароль">
+              <Input
+                name="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Field>
+
+            <Field label="Подтвердите пароль">
+              <Input
+                name="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                required
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </Field>
+            {/* @ts-ignore */}
+            <Link as={RouterLink} to="/login">
+              Залогиниться
+            </Link>
+          </Fieldset.Content>
+
+          <Button type="submit" alignSelf="flex-start">
+            Submit
+          </Button>
+        </Fieldset.Root>
       </form>
-    </div>
+    </Center>
   );
 };
