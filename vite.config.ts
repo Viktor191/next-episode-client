@@ -2,7 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import dotenv from 'dotenv';
-import dynamicImport from 'vite-plugin-dynamic-import';
+// import dynamicImport from 'vite-plugin-dynamic-import';
+
+
+import tsconfigPaths from "vite-tsconfig-paths"
+
+
+
 
 dotenv.config();
 
@@ -12,7 +18,7 @@ const getHash = (s: string) =>
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
-    plugins: [react(), dynamicImport()],
+    plugins: [react(), tsconfigPaths()],
     define: {
       VITE_MODE: JSON.stringify(mode),
     },
