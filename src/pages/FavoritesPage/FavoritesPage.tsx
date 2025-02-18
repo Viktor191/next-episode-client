@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Heading, SimpleGrid, Text, Image} from "@chakra-ui/react";
 import styles from "./FavoritesPage.module.css";
+import {useNavigate} from "react-router-dom";
 
 interface Movie {
     id: string;
@@ -43,6 +44,22 @@ export const FavoritesPage = () => {
         },
     ]);
 
+    const navigate = useNavigate();
+
+    // Проверяем токен при заходе на страницу
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            navigate("/login");
+        }
+    }, [navigate]);
+
+    // Функция выхода из аккаунта
+    const handleLogout = () => {
+        localStorage.removeItem("authToken"); // Удаляем токен
+        navigate("/login"); // Перенаправляем на страницу логина
+    };
+
     const removeFavorite = (id: string) => {
         setFavorites(favorites.filter((movie) => movie.id !== id));
     };
@@ -52,7 +69,9 @@ export const FavoritesPage = () => {
             <Heading as="h2" className={styles.heading}>
                 Избранные фильмы
             </Heading>
-
+            <Button onClick={handleLogout} colorScheme="red" className={styles.logoutButton}>
+                Выйти
+            </Button>
             {favorites.length === 0 ? (
                 <Text className={styles.emptyMessage}>Нет избранных фильмов</Text>
             ) : (

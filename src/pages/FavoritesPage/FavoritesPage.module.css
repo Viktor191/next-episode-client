@@ -61,3 +61,7 @@
     border-radius: 4px;
     margin-top: auto; /* Прижимает кнопку к нижней части карточки */
 }
+
+.logoutButton {
+    margin-bottom: 16px;
+}
