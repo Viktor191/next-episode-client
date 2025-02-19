@@ -5,7 +5,7 @@ import {apiClient} from "helpers/apiClient";
 import styles from "./FavoritesPage.module.css";
 
 interface Movie {
-    tmdbId: string;
+    id: number;
     title: string;
     original_title?: string;
     overview: string;
@@ -55,10 +55,10 @@ export const FavoritesPage = () => {
         navigate("/login");
     };
 
-    const removeFavorite = async (tmdbId: string) => {
+    const removeFavorite = async (id: number) => {
         try {
-            await apiClient.delete(`/shows/${tmdbId}/favorites`);
-            setFavorites(favorites.filter((movie) => movie.tmdbId !== tmdbId));
+            await apiClient.delete(`/shows/${id}/favorites`);
+            setFavorites(favorites.filter((movie) => movie.id !== id));
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(`Ошибка при удалении фильма: ${err.message}`);
@@ -85,7 +85,7 @@ export const FavoritesPage = () => {
             ) : (
                 <SimpleGrid columns={{base: 1, md: 3}} gap={6} className={styles.grid}>
                     {favorites.map((movie) => (
-                        <MovieCard key={movie.tmdbId} movie={movie} onRemove={removeFavorite}/>
+                        <MovieCard key={movie.id} movie={movie} onRemove={removeFavorite}/>
                     ))}
                 </SimpleGrid>
             )}
@@ -93,7 +93,7 @@ export const FavoritesPage = () => {
     );
 };
 
-export const MovieCard = ({movie, onRemove}: { movie: Movie; onRemove: (tmdbId: string) => void }) => {
+export const MovieCard = ({movie, onRemove}: { movie: Movie; onRemove: (tmdbId: number) => void }) => {
     return (
         <Box className={styles.card}>
             <Image
@@ -115,7 +115,7 @@ export const MovieCard = ({movie, onRemove}: { movie: Movie; onRemove: (tmdbId: 
                 </Text>
             </Box>
 
-            <Button colorScheme="red" onClick={() => onRemove(movie.tmdbId)}>
+            <Button colorScheme="red" onClick={() => onRemove(movie.id)}>
                 Удалить
             </Button>
         </Box>
