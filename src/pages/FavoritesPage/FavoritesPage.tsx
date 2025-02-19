@@ -32,7 +32,6 @@ export const FavoritesPage = () => {
         const fetchFavorites = async () => {
             try {
                 const response = await apiClient.get("/users/me/favorites");
-                setFavorites(response.data);
                 console.log("Избранные данные с сервера:", response.data);
                 console.table(response.data);
                 setFavorites(response.data);
