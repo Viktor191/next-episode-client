@@ -1,52 +1,26 @@
 import {useEffect, useState} from "react";
 import {Box, Button, Heading, SimpleGrid, Text, Image} from "@chakra-ui/react";
-import styles from "./FavoritesPage.module.css";
 import {useNavigate} from "react-router-dom";
+import {apiClient} from "helpers/apiClient";
+import styles from "./FavoritesPage.module.css";
 
 interface Movie {
-    id: string;
+    tmdbId: string;
     title: string;
     original_title?: string;
     overview: string;
     vote_average?: number;
     release_date?: string;
-    posterPath: string;
+    poster_path: string;
+    media_type?: "movie" | "tv"
 }
 
 export const FavoritesPage = () => {
-    const [favorites, setFavorites] = useState<Movie[]>([
-        {
-            id: "1",
-            title: "Интерстеллар",
-            original_title: "Interstellar",
-            overview: "Фильм о путешествиях в космосе, времени и надежде.",
-            release_date: "2014-11-07",
-            vote_average: 8.6,
-            posterPath: "https://image.tmdb.org/t/p/w500/nCbkOyOMTEwlEV0LtCOvCnwEONA.jpg",
-        },
-        {
-            id: "2",
-            title: "Терминатор 2: Судный день",
-            original_title: "Terminator 2: Judgment Day",
-            overview: "Фильм о битве против машин и судьбе человечества.",
-            release_date: "1991-07-03",
-            vote_average: 8.5,
-            posterPath: "https://image.tmdb.org/t/p/w500/weVXMD5QBGeQil4HEATZqAkXeEc.jpg",
-        },
-        {
-            id: "3",
-            title: "Матрица",
-            original_title: "The Matrix",
-            overview: "История о виртуальном мире и пробуждении разума.",
-            release_date: "1999-03-31",
-            vote_average: 8.7,
-            posterPath: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-        },
-    ]);
-
+    const [favorites, setFavorites] = useState<Movie[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>("");
     const navigate = useNavigate();
 
-    // Проверяем токен при заходе на страницу
     useEffect(() => {
         const token = localStorage.getItem("authToken");
         if (!token) {
@@ -54,30 +28,64 @@ export const FavoritesPage = () => {
         }
     }, [navigate]);
 
-    // Функция выхода из аккаунта
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const response = await apiClient.get("/users/me/favorites");
+                setFavorites(response.data);
+                console.log("Избранные данные с сервера:", response.data);
+                console.table(response.data);
+                setFavorites(response.data);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(`Ошибка: ${err.message}`);
+                } else {
+                    setError("Не удалось загрузить избранное.");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFavorites();
+    }, []);
+
     const handleLogout = () => {
-        localStorage.removeItem("authToken"); // Удаляем токен
-        navigate("/login"); // Перенаправляем на страницу логина
+        localStorage.removeItem("authToken");
+        navigate("/login");
     };
 
-    const removeFavorite = (id: string) => {
-        setFavorites(favorites.filter((movie) => movie.id !== id));
+    const removeFavorite = async (tmdbId: string) => {
+        try {
+            await apiClient.delete(`/shows/${tmdbId}/favorites`);
+            setFavorites(favorites.filter((movie) => movie.tmdbId !== tmdbId));
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(`Ошибка при удалении фильма: ${err.message}`);
+            } else {
+                setError("Ошибка при удалении фильма.");
+            }
+        }
     };
 
     return (
         <Box className={styles.container}>
-            <Heading as="h2" className={styles.heading}>
-                Избранные фильмы
-            </Heading>
+            <Heading as="h2" className={styles.heading}>Избранное</Heading>
+
             <Button onClick={handleLogout} colorScheme="red" className={styles.logoutButton}>
                 Выйти
             </Button>
-            {favorites.length === 0 ? (
-                <Text className={styles.emptyMessage}>Нет избранных фильмов</Text>
+
+            {loading ? (
+                <Text>Загрузка...</Text>
+            ) : error ? (
+                <Text color="red.500">{error}</Text>
+            ) : favorites.length === 0 ? (
+                <Text className={styles.emptyMessage}>Нет избранных фильмов или сериалов</Text>
             ) : (
                 <SimpleGrid columns={{base: 1, md: 3}} gap={6} className={styles.grid}>
                     {favorites.map((movie) => (
-                        <MovieCard key={movie.id} movie={movie} onRemove={removeFavorite}/>
+                        <MovieCard key={movie.tmdbId} movie={movie} onRemove={removeFavorite}/>
                     ))}
                 </SimpleGrid>
             )}
@@ -85,20 +93,29 @@ export const FavoritesPage = () => {
     );
 };
 
-export const MovieCard = ({movie, onRemove}: { movie: Movie; onRemove: (id: string) => void }) => {
+export const MovieCard = ({movie, onRemove}: { movie: Movie; onRemove: (tmdbId: string) => void }) => {
     return (
         <Box className={styles.card}>
-            <Image src={movie.posterPath} alt={movie.title} className={styles.image}/>
+            <Image
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={`${movie.title} (${movie.media_type === "movie" ? "Фильм" : "Сериал"})`}
+                className={styles.image}
+            />
 
             <Box className={styles.cardContent}>
                 <Text className={styles.label}><strong>Название:</strong> {movie.title}</Text>
-                <Text className={styles.label}><strong>Оригинальное название:</strong> {movie.original_title}</Text>
-                <Text className={styles.label}><strong>Дата выхода:</strong> {movie.release_date}</Text>
-                <Text className={styles.label}><strong>Описание:</strong> {movie.overview}</Text>
-                <Text className={styles.label}><strong>Рейтинг:</strong> {movie.vote_average} / 10</Text>
+                <Text className={styles.label}><strong>Оригинальное
+                    название:</strong> {movie.original_title || "Неизвестно"}</Text>
+                <Text className={styles.label}><strong>Дата выхода:</strong> {movie.release_date || "Неизвестно"}</Text>
+                <Text className={styles.label}><strong>Тип:</strong> {movie.media_type === "movie" ? "Фильм" : "Сериал"}
+                </Text>
+                <Text className={styles.label}><strong>Описание:</strong> {movie.overview || "Нет описания"}</Text>
+                <Text className={styles.label}>
+                    <strong>Рейтинг:</strong> {movie.vote_average ? `${movie.vote_average} / 10` : "Нет данных"}
+                </Text>
             </Box>
 
-            <Button className={styles.removeButton} onClick={() => onRemove(movie.id)}>
+            <Button colorScheme="red" onClick={() => onRemove(movie.tmdbId)}>
                 Удалить
             </Button>
         </Box>
