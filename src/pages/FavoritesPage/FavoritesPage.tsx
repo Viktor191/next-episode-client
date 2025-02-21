@@ -31,20 +31,13 @@ export const FavoritesPage = () => {
 
     useEffect(() => {
         const fetchFavorites = async () => {
-            try {
-                const response = await apiClient.get("/users/me/favorites");
-                setFavorites(response.data);
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(`Ошибка: ${err.message}`);
-                } else {
-                    setError("Не удалось загрузить избранное.");
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
 
+            const response = await apiClient.get("/users/me/favorites");
+            setFavorites(response.data);
+
+            setLoading(false);
+
+        }
         fetchFavorites();
     }, []);
 

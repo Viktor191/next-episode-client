@@ -3,7 +3,6 @@ import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
-import {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
 interface Movie {
@@ -23,7 +22,6 @@ export const AddByImdbPage = () => {
     const [message, setMessage] = useState<string>("");
     const navigate = useNavigate();
 
-    // Извлекаем IMDb ID из URL
     const extractImdbId = (url: string): string | null => {
         const match = url.match(/tt\d+/);
         return match ? match[0] : null;
@@ -39,31 +37,25 @@ export const AddByImdbPage = () => {
             return;
         }
 
-        try {
-            const response = await apiClient.get(`/shows/imdb/${imdbID}`);
-            setMovieData(response.data);
-            setMessage("");
-        } catch (err) {
-            const error = err as AxiosError<{ error: string }>;
-            setMessage(`❌ Ошибка при поиске: ${error.response?.data?.error || error.message}`);
-        }
+
+        const response = await apiClient.get(`/shows/imdb/${imdbID}`);
+        setMovieData(response.data);
+        setMessage("");
+
     };
 
     const handleAddToFavorites = async (movie: Movie) => {
         setMessage(""); // Сброс сообщений при новой попытке
-        try {
-            const response = await apiClient.post(`/shows/${movie.id}/favorites`, {
-                type: movie.media_type,
-            });
-            setMessage(`✅ ${response.data.message}`);
-        } catch (err) {
-            const error = err as AxiosError<{ error: string }>;
-            setMessage(`❌ Ошибка при поиске: ${error.response?.data?.error || error.message}`);
-        }
+
+        const response = await apiClient.post(`/shows/${movie.id}/favorites`, {
+            type: movie.media_type,
+        });
+        setMessage(`✅ ${response.data.message}`);
+
     };
 
     const handleNavigateToFavorites = () => {
-        navigate("/favorites"); // ✅ Переход на страницу избранного
+        navigate("/favorites");
     };
 
     return (

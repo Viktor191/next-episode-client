@@ -4,7 +4,6 @@ import {Field} from "components/ui/field";
 import {useNavigate} from "react-router-dom";
 import styles from "./RegisterPage.module.css";
 import {apiClient} from "helpers/apiClient";
-import {AxiosError} from "axios";
 
 export const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");
@@ -27,16 +26,12 @@ export const RegisterPage = () => {
 
         setError("");
 
-        try {
-            console.log("Отправка запроса...");
-            const response = await apiClient.post("/auth/register", {username, password});
-            console.log("Регистрация успешна:", response.data);
-            navigate("/login");
-        } catch (err) {
-            const error = err as AxiosError<{ error: string }>;
-            console.error("Ошибка регистрации:", error);
-            setError(error.response?.data?.error || "Ошибка сервера");
-        }
+
+        console.log("Отправка запроса...");
+        const response = await apiClient.post("/auth/register", {username, password});
+        console.log("Регистрация успешна:", response.data);
+        navigate("/login");
+
     };
 
     return (

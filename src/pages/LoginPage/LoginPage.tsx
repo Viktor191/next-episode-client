@@ -2,7 +2,6 @@ import {useState, FormEvent, useEffect} from "react";
 import {Button, Fieldset, Input, Stack, Center} from "@chakra-ui/react";
 import {Field} from "components/ui/field";
 import {useNavigate} from "react-router-dom";
-import {AxiosError} from "axios";
 import styles from "./LoginPage.module.css";
 import {apiClient} from "helpers/apiClient";
 import {CustomLink} from "components/ui/CustomLink";
@@ -21,19 +20,15 @@ export const LoginPage = () => {
         e.preventDefault();
         setError("");
 
-        try {
-            console.log("Отправка запроса на URL:", apiClient.defaults.baseURL + " /auth/login");
-            const response = await apiClient.post("auth/login", {username, password});
 
-            localStorage.setItem("authToken", response.data.token);
-            console.log("Успешный вход:", response.data);
+        console.log("Отправка запроса на URL:", apiClient.defaults.baseURL + " /auth/login");
+        const response = await apiClient.post("auth/login", {username, password});
 
-            navigate("/favorites");
-        } catch (err) {
-            const error = err as AxiosError<{ error: string }>;
-            console.error("Ошибка авторизации:", error);
-            setError(error.response?.data?.error || "Ошибка сервера");
-        }
+        localStorage.setItem("authToken", response.data.token);
+        console.log("Успешный вход:", response.data);
+
+        navigate("/favorites");
+
     };
 
     return (
