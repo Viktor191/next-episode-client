@@ -41,10 +41,10 @@
 .cardContent {
     width: 100%;
     text-align: left;
-    flex-grow: 1; /* Растягивает контент, чтобы кнопка была внизу */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Описание заполняет доступное пространство */
+    justify-content: space-between;
 }
 
 .label {
@@ -59,7 +59,7 @@
     width: 100%;
     padding: 8px;
     border-radius: 4px;
-    margin-top: auto; /* Прижимает кнопку к нижней части карточки */
+    margin-top: auto;
 }
 
 .logoutButton {
