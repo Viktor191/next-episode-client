@@ -14,7 +14,7 @@ interface Movie {
 
 interface MovieCardProps {
     movie: Movie;
-    actionButton?: React.ReactNode; // Теперь можно передать любую кнопку
+    actionButton?: React.ReactNode;
 }
 
 export const MovieCard = ({movie, actionButton}: MovieCardProps) => {
@@ -37,7 +37,7 @@ export const MovieCard = ({movie, actionButton}: MovieCardProps) => {
                     <strong>Рейтинг:</strong> {movie.vote_average ? `${movie.vote_average} / 10` : "Нет данных"}
                 </Text>
             </Box>
-            {actionButton && actionButton}
+            {actionButton && <Box className={styles.actionButton}>{actionButton}</Box>}
         </Box>
     );
 };

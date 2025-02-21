@@ -9,6 +9,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    height: 100%;
 }
 
 .image {
@@ -21,10 +22,16 @@
 .cardContent {
     width: 100%;
     text-align: left;
+    flex-grow: 1;
 }
 
 .label {
     font-size: 14px;
     color: #333;
     margin-bottom: 4px;
+}
+
+.actionButton {
+    margin-top: auto;
+    width: 100%;
 }

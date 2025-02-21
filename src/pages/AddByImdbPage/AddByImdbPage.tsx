@@ -3,6 +3,8 @@ import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
+import {AxiosError} from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface Movie {
     id: number;
@@ -18,44 +20,50 @@ interface Movie {
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
     const [movieData, setMovieData] = useState<Movie | null>(null);
-    const [error, setError] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
+    const navigate = useNavigate();
 
-    // 🔍 Извлекаем IMDb ID из URL
+    // Извлекаем IMDb ID из URL
     const extractImdbId = (url: string): string | null => {
         const match = url.match(/tt\d+/);
         return match ? match[0] : null;
     };
 
-    // 📡 Обработчик поиска фильма/сериала по IMDb ID
     const handleSearch = async () => {
-        setError("");
+        setMessage("");
         setMovieData(null);
 
         const imdbID = extractImdbId(imdbUrl);
         if (!imdbID) {
-            setError("Неверная ссылка. Убедитесь, что она содержит корректный IMDb ID.");
+            setMessage("❌ Неверная ссылка. Убедитесь, что она содержит корректный IMDb ID.");
             return;
         }
 
         try {
             const response = await apiClient.get(`/shows/imdb/${imdbID}`);
             setMovieData(response.data);
+            setMessage("");
         } catch (err) {
-            setError(`Ошибка при поиске: ${(err as Error).message}`);
+            const error = err as AxiosError<{ error: string }>;
+            setMessage(`❌ Ошибка при поиске: ${error.response?.data?.error || error.message}`);
         }
     };
 
     const handleAddToFavorites = async (movie: Movie) => {
+        setMessage(""); // Сброс сообщений при новой попытке
         try {
-            console.log("Отправляемые данные:", {type: movie.media_type}); // 🔍 Проверим данные перед запросом
-            await apiClient.post(`/shows/${movie.id}/favorites`, {
-                type: movie.media_type, // 🟢 id не нужен в теле запроса
+            const response = await apiClient.post(`/shows/${movie.id}/favorites`, {
+                type: movie.media_type,
             });
-            alert("✅ Успешно добавлено в избранное");
-        } catch (err: unknown) {
-            console.error("Ошибка при добавлении в избранное:", (err as Error).message);
-            alert(`❌ Ошибка при добавлении в избранное: ${(err as Error).message}`);
+            setMessage(`✅ ${response.data.message}`);
+        } catch (err) {
+            const error = err as AxiosError<{ error: string }>;
+            setMessage(`❌ Ошибка при поиске: ${error.response?.data?.error || error.message}`);
         }
+    };
+
+    const handleNavigateToFavorites = () => {
+        navigate("/favorites"); // ✅ Переход на страницу избранного
     };
 
     return (
@@ -64,22 +72,30 @@ export const AddByImdbPage = () => {
                 Добавить фильм или сериал по IMDb ID
             </Heading>
 
-            {/* 🔗 Поле ввода ссылки IMDb */}
-            <Input
-                placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
-                value={imdbUrl}
-                onChange={(e) => setImdbUrl(e.target.value)}
-                className={styles.input}
-            />
+            {/* 📋 Блок с кнопкой "Перейти к избранному" и формой поиска */}
+            <Box className={styles.searchContainer}>
+                <Button colorScheme="blue" onClick={handleNavigateToFavorites}>
+                    📋 Перейти к избранному
+                </Button>
 
-            <Button colorScheme="blue" mt={4} onClick={handleSearch}>
-                🔍 Найти
-            </Button>
+                <Input
+                    placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
+                    value={imdbUrl}
+                    onChange={(e) => setImdbUrl(e.target.value)}
+                    className={styles.input}
+                />
 
-            {/* ⚡ Ошибка, если что-то пошло не так */}
-            {error && <Text color="red.500">{error}</Text>}
+                <Button colorScheme="blue" onClick={handleSearch}>
+                    🔍 Найти
+                </Button>
+            </Box>
 
-            {/* 🎬 Карточка найденного фильма или сериала */}
+            {message && (
+                <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
+                    {message}
+                </Text>
+            )}
+
             {movieData && (
                 <MovieCard
                     movie={movieData}
