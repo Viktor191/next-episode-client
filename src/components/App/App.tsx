@@ -1,17 +1,42 @@
-import {Routes, Route} from 'react-router-dom';
-import {LoginPage} from 'pages/LoginPage';
-import {RegisterPage} from 'pages/RegisterPage';
-import {ReactNode} from "react";
-import {FavoritesPage} from "pages/FavoritesPage";
-import {AddByImdbPage} from "pages/AddByImdbPage";
+import {Routes, Route, Navigate} from 'react-router-dom';
+import {lazy, ReactNode, Suspense, useEffect} from "react";
+import {routes} from "../../routes.ts";
+import {Toaster, toaster} from "components/ui/toaster"
+import {useGlobalStore} from "stores/useGlobalStore";
 
 export function App(): ReactNode {
+    const {error} = useGlobalStore();
+
+
+    useEffect(() => {// разобрать как работает
+        if (error) {
+            toaster.create({
+                title: "Error",
+                type: "error",
+                description: error,
+            })
+        }
+    }, [error]);
+
     return (
-        <Routes>
-            <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/register" element={<RegisterPage/>}/>
-            <Route path="/favorites" element={<FavoritesPage/>}/>
-            <Route path='/imdbSearch' element={<AddByImdbPage/>}/>
-        </Routes>
+        <>
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    {routes.map((route) => {
+                        const Component = lazy(() =>
+                            import(`../../pages/${route.component}`).then((module) => ({
+                                default: module[route.component],
+                            }))
+                        );
+
+                        return (
+                            <Route key={route.path} path={route.path} element={<Component/>}/>
+                        );
+                    })}
+                    <Route path="/" element={<Navigate to="/login" replace/>}/>
+                </Routes>
+            </Suspense>
+            <Toaster/>
+        </>
     );
 }

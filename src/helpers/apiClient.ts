@@ -1,9 +1,10 @@
 import axios, {AxiosError} from "axios";
+import {useGlobalStore} from "stores/useGlobalStore";
 
 const getToken = () => localStorage.getItem("authToken");
 
 type ServerError = {
-    message: string;
+    error: string;
 };
 
 const apiClient = axios.create({
@@ -35,7 +36,8 @@ apiClient.interceptors.response.use(
         if (error.response) {
             const {status, data} = error.response;
 
-            console.log(`Ошибка ${status}: ${data.message}`);
+            console.log(`Ошибка ${status}: ${data.error}`);
+            useGlobalStore.getState().setError(data.error);
         }
         return Promise.reject(error);
     }

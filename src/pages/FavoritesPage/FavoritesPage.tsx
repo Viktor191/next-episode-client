@@ -50,9 +50,11 @@ export const FavoritesPage = () => {
         navigate("/imdbSearch");
     };
 
-    const removeFavorite = async (id: number) => {
+    const removeFavorite = async (id: number, type: "movie" | "tv") => {
         try {
-            await apiClient.delete(`/shows/${id}/favorites`);
+            await apiClient.delete(`/shows/${id}/favorites`, {
+                data: {type},
+            });
             setFavorites(favorites.filter((movie) => movie.id !== id));
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -89,10 +91,7 @@ export const FavoritesPage = () => {
                             key={movie.id}
                             movie={movie}
                             actionButton={
-                                <Button
-                                    colorScheme="red"
-                                    onClick={() => removeFavorite(movie.id)}
-                                >
+                                <Button colorScheme="red" onClick={() => removeFavorite(movie.id, movie.media_type!)}>
                                     Удалить
                                 </Button>
                             }
