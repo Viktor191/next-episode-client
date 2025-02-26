@@ -1,18 +1,14 @@
-import {ReactNode} from "react";
 import {Box, Flex} from "@chakra-ui/react";
 import {LogOut} from "lucide-react";
 import {NavLink, useNavigate} from "react-router-dom";
 import styles from "./NavigationBar.module.css";
 
-interface NavigationBarProps {
-    onLogout: () => void;
-}
 
-export const NavigationBar = ({onLogout}: NavigationBarProps): ReactNode => {
+export const NavigationBar = () => {
     const navigate = useNavigate();
 
     const handleLogout = (): void => {
-        onLogout();
+        localStorage.removeItem("authToken");
         navigate("/login");
     };
 

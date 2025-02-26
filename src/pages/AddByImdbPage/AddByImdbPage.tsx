@@ -4,6 +4,7 @@ import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {Movie} from "types/Movie";
+import {NavigationBar} from "components/NavigationBar";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
@@ -43,40 +44,43 @@ export const AddByImdbPage = () => {
     };
 
     return (
-        <Box className={styles.container}>
-            <Heading as="h2" className={styles.heading}>
-                Добавить фильм или сериал по IMDb ID
-            </Heading>
+        <>
+            <NavigationBar/>
+            <Box className={styles.container}>
+                <Heading as="h2" className={styles.heading}>
+                    Добавить фильм или сериал по IMDb ID
+                </Heading>
 
-            <Box className={styles.searchContainer}>
-                <Input
-                    placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
-                    value={imdbUrl}
-                    onChange={(e) => setImdbUrl(e.target.value)}
-                    className={styles.input}
-                />
+                <Box className={styles.searchContainer}>
+                    <Input
+                        placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
+                        value={imdbUrl}
+                        onChange={(e) => setImdbUrl(e.target.value)}
+                        className={styles.input}
+                    />
 
-                <Button colorScheme="blue" onClick={handleSearch}>
-                    🔍 Найти
-                </Button>
+                    <Button colorScheme="blue" onClick={handleSearch}>
+                        🔍 Найти
+                    </Button>
+                </Box>
+
+                {message && (
+                    <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
+                        {message}
+                    </Text>
+                )}
+
+                {movieData && (
+                    <MovieCard
+                        movie={movieData}
+                        actionButton={
+                            <Button colorScheme="green" onClick={() => handleAddToFavorites(movieData)}>
+                                Добавить в избранное
+                            </Button>
+                        }
+                    />
+                )}
             </Box>
-
-            {message && (
-                <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
-                    {message}
-                </Text>
-            )}
-
-            {movieData && (
-                <MovieCard
-                    movie={movieData}
-                    actionButton={
-                        <Button colorScheme="green" onClick={() => handleAddToFavorites(movieData)}>
-                            Добавить в избранное
-                        </Button>
-                    }
-                />
-            )}
-        </Box>
+        </>
     );
 };

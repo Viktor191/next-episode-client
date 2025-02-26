@@ -4,6 +4,7 @@ import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
 import {Movie} from "types/Movie";
+import {NavigationBar} from "components/NavigationBar";
 
 export const AddByNamePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -31,45 +32,48 @@ export const AddByNamePage = () => {
     };
 
     return (
-        <Box className={styles.container}>
-            <Heading as="h2" className={styles.heading}>
-                Поиск фильма или сериала по названию
-            </Heading>
+        <>
+            <NavigationBar/>
+            <Box className={styles.container}>
+                <Heading as="h2" className={styles.heading}>
+                    Поиск фильма или сериала по названию
+                </Heading>
 
-            <Box className={styles.searchContainer}>
-                <Input
-                    placeholder="Введите название фильма или сериала"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={styles.input}
-                />
+                <Box className={styles.searchContainer}>
+                    <Input
+                        placeholder="Введите название фильма или сериала"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className={styles.input}
+                    />
 
-                <Button colorScheme="blue" onClick={handleSearch}>
-                    🔍 Найти
-                </Button>
+                    <Button colorScheme="blue" onClick={handleSearch}>
+                        🔍 Найти
+                    </Button>
+                </Box>
+
+                {message && (
+                    <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
+                        {message}
+                    </Text>
+                )}
+
+                {results.length > 0 && (
+                    <SimpleGrid columns={{base: 1, md: 2, lg: 1}} gap={6} className={styles.grid}>
+                        {results.map((movie) => (
+                            <MovieCard
+                                key={movie.id}
+                                movie={movie}
+                                actionButton={
+                                    <Button colorScheme="green" onClick={() => handleAddToFavorites(movie)}>
+                                        Добавить в избранное
+                                    </Button>
+                                }
+                            />
+                        ))}
+                    </SimpleGrid>
+                )}
             </Box>
-
-            {message && (
-                <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
-                    {message}
-                </Text>
-            )}
-
-            {results.length > 0 && (
-                <SimpleGrid columns={{base: 1, md: 2, lg: 1}} gap={6} className={styles.grid}>
-                    {results.map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            movie={movie}
-                            actionButton={
-                                <Button colorScheme="green" onClick={() => handleAddToFavorites(movie)}>
-                                    Добавить в избранное
-                                </Button>
-                            }
-                        />
-                    ))}
-                </SimpleGrid>
-            )}
-        </Box>
+        </>
     );
 };
