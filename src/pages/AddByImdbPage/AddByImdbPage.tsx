@@ -3,14 +3,12 @@ import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
-import {useNavigate} from "react-router-dom";
 import {Movie} from "types/Movie";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
     const [movieData, setMovieData] = useState<Movie | null>(null);
     const [message, setMessage] = useState<string>("");
-    const navigate = useNavigate();
 
     const extractImdbId = (url: string): string | null => {
         const match = url.match(/tt\d+/);
@@ -44,10 +42,6 @@ export const AddByImdbPage = () => {
 
     };
 
-    const handleNavigateToFavorites = () => {
-        navigate("/favorites");
-    };
-
     return (
         <Box className={styles.container}>
             <Heading as="h2" className={styles.heading}>
@@ -55,10 +49,6 @@ export const AddByImdbPage = () => {
             </Heading>
 
             <Box className={styles.searchContainer}>
-                <Button colorScheme="blue" onClick={handleNavigateToFavorites}>
-                    Перейти к избранному
-                </Button>
-
                 <Input
                     placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
                     value={imdbUrl}

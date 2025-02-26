@@ -3,14 +3,12 @@ import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
 import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
-import {useNavigate} from "react-router-dom";
 import {Movie} from "types/Movie";
 
 export const AddByNamePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [results, setResults] = useState<Movie[]>([]);
     const [message, setMessage] = useState<string>("");
-    const navigate = useNavigate();
 
     const handleSearch = () => {
         setMessage("");
@@ -32,10 +30,6 @@ export const AddByNamePage = () => {
             .then((response) => setMessage(`✅ ${response.data.message}`));
     };
 
-    const handleNavigateToFavorites = () => {
-        navigate("/favorites");
-    };
-
     return (
         <Box className={styles.container}>
             <Heading as="h2" className={styles.heading}>
@@ -43,10 +37,6 @@ export const AddByNamePage = () => {
             </Heading>
 
             <Box className={styles.searchContainer}>
-                <Button colorScheme="blue" onClick={handleNavigateToFavorites}>
-                    Перейти к избранному
-                </Button>
-
                 <Input
                     placeholder="Введите название фильма или сериала"
                     value={searchQuery}
@@ -55,7 +45,7 @@ export const AddByNamePage = () => {
                 />
 
                 <Button colorScheme="blue" onClick={handleSearch}>
-                    Найти
+                    🔍 Найти
                 </Button>
             </Box>
 

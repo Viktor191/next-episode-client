@@ -1,15 +1,13 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
-import {useNavigate} from "react-router-dom";
 import {Movie} from "types/Movie";
 
 export const UpcomingPage = () => {
     const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([]);
     const [message, setMessage] = useState<string>("");
-    const navigate = useNavigate();
 
     const handleFetchUpcoming = () => {
         setMessage("");
@@ -48,9 +46,9 @@ export const UpcomingPage = () => {
         });
     };
 
-    const handleNavigateToFavorites = () => {
-        navigate("/favorites");
-    };
+    useEffect(() => {
+        handleFetchUpcoming();
+    }, []);
 
     return (
         <Box className={styles.container}>
@@ -59,11 +57,8 @@ export const UpcomingPage = () => {
             </Heading>
 
             <Box className={styles.searchContainer}>
-                <Button colorScheme="blue" onClick={handleNavigateToFavorites}>
-                    📋 Перейти к избранному
-                </Button>
                 <Button colorScheme="blue" onClick={handleFetchUpcoming}>
-                    🔍 Показать предстоящие фильмы
+                    Обновить список
                 </Button>
             </Box>
 

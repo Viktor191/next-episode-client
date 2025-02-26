@@ -30,7 +30,7 @@ export const NavigationBar = ({onLogout}: NavigationBarProps): ReactNode => {
                         Поиск по названию
                     </NavLink>
                     <NavLink to="/upcoming" className={({isActive}) => isActive ? styles.activeLink : styles.link}>
-                        Предстоящие фильмы
+                        Скоро на экранах
                     </NavLink>
                 </Flex>
                 <Flex className={styles.logoutLink} onClick={handleLogout}>

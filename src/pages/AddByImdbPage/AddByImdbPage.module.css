@@ -7,24 +7,21 @@
 
 .heading {
     margin-bottom: 30px;
-    font-size: 28px;
     color: #2d3748;
     font-weight: bold;
 }
 
-/* 🔄 Новый контейнер для кнопки и поля поиска */
 .searchContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap; /* ✅ Для адаптации на маленьких экранах */
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
 .input {
-    width: 100%;
-    max-width: 400px;
+    width: 60%;
     padding: 12px 16px;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
