@@ -2,19 +2,10 @@ import {useEffect, useState} from "react";
 import {Box, Button, Heading, SimpleGrid, Text} from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import {apiClient} from "helpers/apiClient";
-import {MovieCard} from "components/MovieCard"; // ✅ Используем внешний компонент
+import {MovieCard} from "components/MovieCard";
 import styles from "./FavoritesPage.module.css";
-
-interface Movie {
-    id: number;
-    title: string;
-    original_title?: string;
-    overview: string;
-    vote_average?: number;
-    release_date?: string;
-    poster_path: string;
-    media_type?: "movie" | "tv";
-}
+import {Movie} from "types/Movie";
+import {NavigationBar} from "components/NavigationBar";
 
 export const FavoritesPage = () => {
     const [favorites, setFavorites] = useState<Movie[]>([]);
@@ -68,7 +59,7 @@ export const FavoritesPage = () => {
     return (
         <Box className={styles.container}>
             <Heading as="h2" className={styles.heading}>Избранное</Heading>
-
+            <NavigationBar onLogout={handleLogout}/>
             <Box display="flex" gap="10px" mb={4}>
                 <Button onClick={handleLogout} colorScheme="red" className={styles.logoutButton}>
                     Выйти
@@ -85,14 +76,14 @@ export const FavoritesPage = () => {
             ) : favorites.length === 0 ? (
                 <Text className={styles.emptyMessage}>Нет избранных фильмов или сериалов</Text>
             ) : (
-                <SimpleGrid columns={{base: 1, md: 3}} gap={6} className={styles.grid}>
+                <SimpleGrid columns={{base: 1, md: 1}} gap={6} className={styles.grid}>
                     {favorites.map((movie) => (
                         <MovieCard
                             key={movie.id}
                             movie={movie}
                             actionButton={
                                 <Button colorScheme="red" onClick={() => removeFavorite(movie.id, movie.media_type!)}>
-                                    Удалить
+                                    X
                                 </Button>
                             }
                         />

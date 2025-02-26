@@ -1,0 +1,43 @@
+.container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.heading {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #2d3748;
+    font-weight: bold;
+}
+
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 16px;
+}
+
+.grid {
+    display: grid;
+    justify-content: center;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .searchContainer {
+        flex-direction: column;
+    }
+}

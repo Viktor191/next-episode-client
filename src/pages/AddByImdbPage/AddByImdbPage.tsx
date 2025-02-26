@@ -4,17 +4,7 @@ import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {useNavigate} from "react-router-dom";
-
-interface Movie {
-    id: number;
-    title: string;
-    original_title?: string;
-    overview: string;
-    vote_average?: number;
-    release_date?: string;
-    poster_path: string;
-    media_type: "movie" | "tv";
-}
+import {Movie} from "types/Movie";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
@@ -45,7 +35,7 @@ export const AddByImdbPage = () => {
     };
 
     const handleAddToFavorites = async (movie: Movie) => {
-        setMessage(""); // Сброс сообщений при новой попытке
+        setMessage("");
 
         const response = await apiClient.post(`/shows/${movie.id}/favorites`, {
             type: movie.media_type,
@@ -64,10 +54,9 @@ export const AddByImdbPage = () => {
                 Добавить фильм или сериал по IMDb ID
             </Heading>
 
-            {/* 📋 Блок с кнопкой "Перейти к избранному" и формой поиска */}
             <Box className={styles.searchContainer}>
                 <Button colorScheme="blue" onClick={handleNavigateToFavorites}>
-                    📋 Перейти к избранному
+                    Перейти к избранному
                 </Button>
 
                 <Input

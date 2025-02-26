@@ -14,5 +14,13 @@ export const routes = [
     {
         path: "/imdbSearch",
         component: "AddByImdbPage",
+    },
+    {
+        path: "/search",
+        component: "AddByNamePage",
+    },
+    {
+        path: "/upcoming",
+        component: "UpcomingPage",
     }
 ];
