@@ -6,7 +6,7 @@ import {useUser} from "hooks/api/useUser.ts";
 
 export const FavoritesPage = () => {
     const {getMyFavorites, removeMyFavorite} = useUser();
-    const {data: favorites = [], isFetching} = getMyFavorites();
+    const {data: favorites = [], isFetching, refetch} = getMyFavorites();
     const {mutateAsync: removeMyFavoriteAction} = removeMyFavorite;
 
     return (
@@ -14,7 +14,11 @@ export const FavoritesPage = () => {
             <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>Избранное</Heading>
-
+                <Box className={styles.searchContainer}>
+                    <Button colorScheme="blue" onClick={() => refetch()}>
+                        Обновить список
+                    </Button>
+                </Box>
                 {isFetching && <Text>Загрузка...</Text>}
                 {!isFetching && favorites.length === 0 && (
                     <Text className={styles.emptyMessage}>Нет избранных фильмов или сериалов</Text>
@@ -22,6 +26,7 @@ export const FavoritesPage = () => {
                 {!isFetching && favorites.length > 0 && (
                     <SimpleGrid columns={{base: 1, md: 1}} gap={6} className={styles.grid}>
                         {favorites
+                            ?.filter((movie) => movie !== undefined && movie !== null)
                             .slice()
                             .reverse()
                             .map((movie) => (
@@ -32,7 +37,7 @@ export const FavoritesPage = () => {
                                         <Button
                                             onClick={() => removeMyFavoriteAction({
                                                 id: movie.id,
-                                                type: movie.media_type!
+                                                type: movie.media_type!,
                                             })}
                                             aria-label={`Удалить ${movie.title} из избранного`}
                                         >

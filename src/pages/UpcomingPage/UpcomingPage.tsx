@@ -14,7 +14,10 @@ export const UpcomingPage = () => {
         <>
             <NavigationBar/>
             <Box className={styles.container}>
-                <Heading as="h2" className={styles.heading}>Предстоящие фильмы и сериалы</Heading>
+                <Heading as="h2" className={styles.heading}>
+                    <Box as="span" display="block">Фильмы и сериалы, которые сейчас идут в Кинотеатрах</Box>
+                    <Box as="span" display="block">или выйдут в ближайший месяц</Box>
+                </Heading>
 
                 <Box className={styles.searchContainer}>
                     <Button colorScheme="blue" onClick={() => refetch()}>

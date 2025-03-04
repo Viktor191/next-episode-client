@@ -1,6 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserFavoriteResponse} from "hooks/types/User";
 import {apiClient} from "helpers/apiClient.ts";
+import {toaster} from "components/ui/toaster.tsx";
 
 export const useUser = () => {
     const queryClient = useQueryClient();
@@ -12,6 +13,7 @@ export const useUser = () => {
                 const {data} = await apiClient.get("/users/me/favorites");
                 return data;
             },
+            refetchOnMount: true,
         });
     };
 
@@ -36,13 +38,23 @@ export const useUser = () => {
             return response.data;
         },
         onSuccess: (newMovie) => {
+            // console.log("Фильм успешно добавлен:", newMovie);
+            // if (!newMovie || !newMovie.id || !newMovie.title) return;
+
             queryClient.setQueryData(["myFavorites"], (oldFavorites: UserFavoriteResponse[] = []) => {
                 if (oldFavorites.some((movie) => movie.id === newMovie.id)) {
-                    return oldFavorites; // Если фильм уже в списке, ничего не меняем
+                    return oldFavorites;
                 }
-                return [newMovie, ...oldFavorites]; // 🔥 Добавляем фильм в начало списка
+                return [newMovie, ...oldFavorites];
             });
-        },
+            setTimeout(() => {
+                toaster.create({
+                    title: "Добавление в избранное",
+                    type: "success",
+                    description: newMovie.message || "Фильм добавлен в избранное!",
+                });
+            }, 100);
+        }
     });
 
     const actions = {getMyFavorites, addToFavorites, removeMyFavorite};

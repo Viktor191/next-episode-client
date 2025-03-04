@@ -1,9 +1,9 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient.ts";
 import {Movie} from "types/Movie";
+import {toaster} from "components/ui/toaster.tsx";
 
 export const useShows = () => {
-    // Получаем список предстоящих фильмов
     const getUpcomingMovies = () => {
         return useQuery<Movie[]>({
             queryKey: ["upcomingMovies"],
@@ -11,13 +11,12 @@ export const useShows = () => {
                 const {data} = await apiClient.get("/shows/upcoming");
                 return data;
             },
-            staleTime: 1000 * 60 * 10, // 10 минут кэш
         });
     };
 
     const addToFavorites = useMutation({
         mutationFn: async (dbID: number) => {
-            const [movieResponse, tvResponse] = await Promise.allSettled([// определяем тип фильма или сериала
+            const [movieResponse, tvResponse] = await Promise.allSettled([
                 apiClient.get(`/shows/movie/${dbID}`),
                 apiClient.get(`/shows/tv/${dbID}`),
             ]);
@@ -38,6 +37,13 @@ export const useShows = () => {
             });
 
             return response.data;
+        },
+        onSuccess: (response) => {
+            toaster.create({
+                title: "Добавление в избранное",
+                type: "success",
+                description: response.message,
+            });
         },
     });
 
