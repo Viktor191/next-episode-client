@@ -1,55 +1,52 @@
 import {useState} from "react";
 import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
-import {apiClient} from "helpers/apiClient";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
-import {Movie} from "types/Movie";
 import {NavigationBar} from "components/NavigationBar";
+import {useMovieSearch} from "hooks/api/useMovieSearch.ts";
+import {useUser} from "hooks/api/useUser.ts";
+import {toaster} from "components/ui/toaster"; // 👈 Импортируем тостер
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
-    const [movieData, setMovieData] = useState<Movie | null>(null);
-    const [message, setMessage] = useState<string>("");
+    const [added, setAdded] = useState<boolean>(false); // ✅ Состояние для кнопки
+    const {addToFavorites} = useUser();
+    const {mutateAsync: addToFavoritesAction} = addToFavorites;
 
     const extractImdbId = (url: string): string | null => {
         const match = url.match(/tt\d+/);
         return match ? match[0] : null;
     };
 
-    const handleSearch = async () => {
-        setMessage("");
-        setMovieData(null);
+    const imdbID = extractImdbId(imdbUrl);
+    const {data: movieData, isFetching, error} = useMovieSearch(imdbID);
 
-        const imdbID = extractImdbId(imdbUrl);
-        if (!imdbID) {
-            setMessage("❌ Неверная ссылка. Убедитесь, что она содержит корректный IMDb ID.");
-            return;
+    const handleAddToFavorites = async () => {
+        if (!movieData) return;
+
+        try {
+            await addToFavoritesAction({id: movieData.id, type: movieData.media_type});
+
+            setAdded(true); // ✅ Меняем состояние кнопки
+            toaster.create({ // ✅ Показываем уведомление
+                title: "Добавлено!",
+                type: "success",
+                description: `${movieData.title} добавлен в избранное.`,
+            });
+        } catch {
+            toaster.create({ // 🔴 Если ошибка
+                title: "Ошибка",
+                type: "error",
+                description: "Не удалось добавить в избранное.",
+            });
         }
-
-
-        const response = await apiClient.get(`/shows/imdb/${imdbID}`);
-        setMovieData(response.data);
-        setMessage("");
-
-    };
-
-    const handleAddToFavorites = async (movie: Movie) => {
-        setMessage("");
-
-        const response = await apiClient.post(`/shows/${movie.id}/favorites`, {
-            type: movie.media_type,
-        });
-        setMessage(`✅ ${response.data.message}`);
-
     };
 
     return (
         <>
             <NavigationBar/>
             <Box className={styles.container}>
-                <Heading as="h2" className={styles.heading}>
-                    Добавить фильм или сериал по IMDb ID
-                </Heading>
+                <Heading as="h2" className={styles.heading}>Добавить фильм или сериал по IMDb ID</Heading>
 
                 <Box className={styles.searchContainer}>
                     <Input
@@ -59,23 +56,24 @@ export const AddByImdbPage = () => {
                         className={styles.input}
                     />
 
-                    <Button colorScheme="blue" onClick={handleSearch}>
+                    <Button colorScheme="blue" onClick={() => setImdbUrl(imdbUrl)}>
                         🔍 Найти
                     </Button>
                 </Box>
 
-                {message && (
-                    <Text color={message.includes("✅") ? "green.500" : "red.500"} mt={4}>
-                        {message}
-                    </Text>
-                )}
+                {isFetching && <Text>Загрузка...</Text>}
+                {error && <Text color="red.500">❌ Ошибка при поиске</Text>}
 
                 {movieData && (
                     <MovieCard
                         movie={movieData}
                         actionButton={
-                            <Button colorScheme="green" onClick={() => handleAddToFavorites(movieData)}>
-                                Добавить в избранное
+                            <Button
+                                colorScheme={added ? "gray" : "green"}
+                                onClick={handleAddToFavorites}
+                                disabled={added} // ✅ Делаем кнопку неактивной после добавления
+                            >
+                                {added ? "✅ Добавлено" : "Добавить в избранное"}
                             </Button>
                         }
                     />
