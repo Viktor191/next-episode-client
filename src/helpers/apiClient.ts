@@ -7,8 +7,17 @@ type ServerError = {
     error: string;
 };
 
+const apiBaseURL = import.meta.env.VITE_API_URL;
+
+if (!apiBaseURL) {
+    console.error("⚠️ Ошибка: VITE_API_URL не задана! Проверь .env файлы.");
+    throw new Error("VITE_API_URL is missing in environment variables");
+}
+
+console.log("🌍 Используется API URL:", apiBaseURL);
+
 const apiClient = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
+    baseURL: apiBaseURL,
     headers: {
         "Content-Type": "application/json",
     },
@@ -29,14 +38,11 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+    (response) => response,
     (error: AxiosError<ServerError>) => {
         if (error.response) {
             const {status, data} = error.response;
-
-            console.log(`Ошибка ${status}: ${data.error}`);
+            console.log(`❌ Ошибка ${status}: ${data.error}`);
             useGlobalStore.getState().setError(data.error);
         }
         return Promise.reject(error);
