@@ -6,32 +6,45 @@ import {useGlobalStore} from "stores/useGlobalStore";
 import {ProtectedRoute} from "components/ProtectedRoute";
 
 export function App(): ReactNode {
-    const {error} = useGlobalStore();
+    const {error, toasterData, clearToaster} = useGlobalStore();
 
     useEffect(() => {
         if (error) {
             toaster.create({
-                title: "Error",
+                title: "Ошибка",
                 type: "error",
                 description: error,
             });
         }
     }, [error]);
 
+    useEffect(() => {
+        if (toasterData) {
+            toaster.create({
+                title: toasterData.title,
+                type: toasterData.type,
+                description: toasterData.description,
+            });
+            clearToaster(); // Очищаем тост после показа
+        }
+    }, [toasterData, clearToaster]);
+
     return (
         <>
             <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace/>}/>
-                    {routes
-                        .map(({path, component, isProtected}) => {
-                            const Component = lazy(() =>
-                                import(`../../pages/${component}`).then((module) => ({
-                                    default: module[component],
-                                }))
-                            );
-                            return (
-                                <Route key={path} path={path} element={
+                    {routes.map(({path, component, isProtected}) => {
+                        const Component = lazy(() =>
+                            import(`../../pages/${component}`).then((module) => ({
+                                default: module[component],
+                            }))
+                        );
+                        return (
+                            <Route
+                                key={path}
+                                path={path}
+                                element={
                                     isProtected ? (
                                         <ProtectedRoute>
                                             <Component/>
@@ -39,9 +52,10 @@ export function App(): ReactNode {
                                     ) : (
                                         <Component/>
                                     )
-                                }/>
-                            );
-                        })}
+                                }
+                            />
+                        );
+                    })}
                 </Routes>
             </Suspense>
             <Toaster/>

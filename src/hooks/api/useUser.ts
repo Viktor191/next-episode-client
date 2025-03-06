@@ -1,10 +1,12 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserFavoriteResponse} from "hooks/types/User";
 import {apiClient} from "helpers/apiClient.ts";
-import {toaster} from "components/ui/toaster.tsx";
+import {useGlobalStore} from "stores/useGlobalStore";
+import {AxiosError} from "axios";
 
 export const useUser = () => {
     const queryClient = useQueryClient();
+    const {setToasterData} = useGlobalStore();
 
     const getMyFavorites = () => {
         return useQuery<UserFavoriteResponse[]>({
@@ -37,9 +39,18 @@ export const useUser = () => {
             });
             return response.data;
         },
+        onMutate: async (newMovie) => {
+            await queryClient.cancelQueries({queryKey: ["myFavorites"]});
+
+            const previousFavorites = queryClient.getQueryData<UserFavoriteResponse[]>(["myFavorites"]) || [];
+
+            // Оптимистично добавляем фильм в избранное перед запросом
+            queryClient.setQueryData(["myFavorites"], [...previousFavorites, {id: newMovie.id, type: newMovie.type}]);
+
+            return {previousFavorites}; // Возвращаем для возможного отката
+        },
         onSuccess: (newMovie) => {
-            // console.log("Фильм успешно добавлен:", newMovie);
-            // if (!newMovie || !newMovie.id || !newMovie.title) return;
+            if (!newMovie || !newMovie.id) return;
 
             queryClient.setQueryData(["myFavorites"], (oldFavorites: UserFavoriteResponse[] = []) => {
                 if (oldFavorites.some((movie) => movie.id === newMovie.id)) {
@@ -47,17 +58,25 @@ export const useUser = () => {
                 }
                 return [newMovie, ...oldFavorites];
             });
-            setTimeout(() => {
-                toaster.create({
-                    title: "Добавление в избранное",
-                    type: "success",
-                    description: newMovie.message || "Фильм добавлен в избранное!",
-                });
-            }, 100);
-        }
+
+            setToasterData({
+                title: "Добавлено в избранное",
+                type: "success",
+                description: newMovie.message || "Фильм успешно добавлен в избранное!",
+            });
+        },
+        onError: (error: AxiosError<{ error: string }>, _, context) => {
+            // Откатываем к предыдущему состоянию, если запрос не удался
+            queryClient.setQueryData(["myFavorites"], context?.previousFavorites);
+
+            const errorMessage = error.response?.data?.error || "Ошибка при добавлении в избранное";
+            setToasterData({
+                title: "Ошибка",
+                type: "error",
+                description: errorMessage,
+            });
+        },
     });
 
-    const actions = {getMyFavorites, addToFavorites, removeMyFavorite};
-
-    return {...actions};
+    return {getMyFavorites, addToFavorites, removeMyFavorite};
 };

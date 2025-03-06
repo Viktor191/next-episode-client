@@ -15,7 +15,7 @@ export const AddByImdbPage = () => {
     const {addToFavorites} = useUser();
     const {mutateAsync: addToFavoritesAction} = addToFavorites;
 
-    const inputRef = useRef<HTMLInputElement>(null); // ✅ Создаем ref для инпута
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         inputRef.current?.focus();
