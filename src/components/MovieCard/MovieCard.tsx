@@ -1,6 +1,6 @@
 import {Box, Image, Text} from "@chakra-ui/react";
 import styles from "./MovieCard.module.css";
-import {Movie} from "types/Movie";
+import {Movie} from "hooks/types/Movie.ts";
 
 interface MovieCardProps {
     movie: Movie;

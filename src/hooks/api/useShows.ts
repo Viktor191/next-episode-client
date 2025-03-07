@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient.ts";
-import {Movie} from "types/Movie";
+import {Movie} from "hooks/types/Movie.ts";
 
 export const useShows = () => {
     const queryClient = useQueryClient();

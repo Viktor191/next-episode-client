@@ -5,7 +5,7 @@ import styles from "./AddByImdbPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
 import {useMovieSearch} from "hooks/api/useMovieSearch.ts";
 import {useUser} from "hooks/api/useUser.ts";
-import {Movie} from "types/Movie.ts";
+import {Movie} from "hooks/types/Movie.ts";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");

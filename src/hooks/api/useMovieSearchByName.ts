@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient.ts";
-import {Movie} from "types/Movie";
+import {Movie} from "hooks/types/Movie.ts";
 
 export const useMovieSearchByName = (searchTerm: string) => {
     return useQuery<Movie[]>({
