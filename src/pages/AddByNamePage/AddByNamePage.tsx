@@ -3,7 +3,7 @@ import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useMovieSearchByName} from "hooks/api/useMovieSearchByName.ts";
+import {useMovieSearchByName} from "hooks/api/useMovieSearch.ts";
 import {useUser} from "hooks/api/useUser.ts";
 
 export const AddByNamePage = () => {
