@@ -1,9 +1,9 @@
-import {useState, FormEvent, useEffect} from "react";
+import {useState, FormEvent} from "react";
 import {Button, Fieldset, Input, Stack, Center} from "@chakra-ui/react";
 import {Field} from "components/ui/field";
 import {useNavigate} from "react-router-dom";
 import styles from "./RegisterPage.module.css";
-import {apiClient} from "helpers/apiClient";
+import {useRegister} from "hooks/api/useRegister.ts";
 
 export const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");
@@ -11,12 +11,9 @@ export const RegisterPage = () => {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
     const navigate = useNavigate();
+    const {registerUser} = useRegister();
 
-    useEffect(() => {
-        console.log("Текущее значение error:", error);
-    }, [error]);
-
-    const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
+    const handleRegister = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
@@ -25,13 +22,7 @@ export const RegisterPage = () => {
         }
 
         setError("");
-
-
-        console.log("Отправка запроса...");
-        const response = await apiClient.post("/auth/register", {username, password});
-        console.log("Регистрация успешна:", response.data);
-        navigate("/login");
-
+        registerUser.mutate({username, password});
     };
 
     return (
@@ -75,14 +66,12 @@ export const RegisterPage = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                         </Field>
-
-                        <Button onClick={() => navigate("/login")}>
-                            Войти
+                        <Button type="submit">
+                            Зарегистрироваться
                         </Button>
                     </Fieldset.Content>
-
-                    <Button type="submit">
-                        Зарегистрироваться
+                    <Button onClick={() => navigate("/login")}>
+                        Войти
                     </Button>
                 </Fieldset.Root>
             </form>

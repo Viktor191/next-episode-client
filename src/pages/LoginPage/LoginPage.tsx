@@ -1,46 +1,32 @@
-import {useState, FormEvent, useEffect} from "react";
+import {useState, FormEvent} from "react";
 import {Button, Fieldset, Input, Stack, Center} from "@chakra-ui/react";
 import {Field} from "components/ui/field";
-import {useNavigate} from "react-router-dom";
+import {useAuth} from "hooks/api/useAuth.ts";
 import styles from "./LoginPage.module.css";
-import {apiClient} from "helpers/apiClient";
 import {CustomLink} from "components/ui/CustomLink";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [error, setError] = useState<string>("");
-    const navigate = useNavigate();
+    const {loginUser} = useAuth();
 
-    useEffect(() => {
-        console.log("Текущее значение error:", error);
-    }, [error]);
-
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError("");
-
-
-        console.log("Отправка запроса на URL:", apiClient.defaults.baseURL + " /auth/login");
-        const response = await apiClient.post("auth/login", {username, password});
-
-        localStorage.setItem("authToken", response.data.token);
-        console.log("Успешный вход:", response.data);
-
-        navigate("/favorites");
-
+        loginUser.mutate({username, password});
     };
 
     return (
         <Center paddingTop={20}>
-            <form action="#" className={styles.form} onSubmit={handleLogin}>
+            <form className={styles.form} onSubmit={handleLogin}>
                 <Fieldset.Root size="lg" maxW="md">
                     <Stack>
                         <Fieldset.Legend>Вход</Fieldset.Legend>
                         <Fieldset.HelperText>
                             Введите логин и пароль для входа
                         </Fieldset.HelperText>
-                        {error ? <p style={{color: "red"}}>{error}</p> : null}
+                        {loginUser.isError && (
+                            <p style={{color: "red"}}>Ошибка входа. Попробуйте снова.</p>
+                        )}
                     </Stack>
 
                     <Fieldset.Content>
