@@ -9,9 +9,9 @@ import {filterMoviesByYear} from "helpers/filterMovies.ts";
 import {Movie} from "hooks/types/Movie.ts";
 
 export const UpcomingPage = () => {
-    const {getUpcomingMovies, addToFavorites} = useShows();
+    const {getUpcomingMovies, addToFavoritesUpcoming} = useShows();
     const {data: upcomingMovies = [], isFetching, refetch} = getUpcomingMovies();
-    const {mutateAsync: addToFavoritesAction} = addToFavorites;
+    const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(false);
 
@@ -19,14 +19,14 @@ export const UpcomingPage = () => {
         setFilterByCurrentYear((prev) => !prev);
     };
 
-    const filteredMovies: Movie[] = filterMoviesByYear(upcomingMovies, filterByCurrentYear); // ✅ Указываем тип
+    const filteredMovies: Movie[] = filterMoviesByYear(upcomingMovies, filterByCurrentYear);
 
     return (
         <>
             <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>
-                    <Box as="span" display="block">Фильмы и сериалы, которые сейчас идут в Кинотеатрах</Box>
+                    <Box as="span" display="block">Фильмы, которые идут в Кинотеатрах</Box>
                     <Box as="span" display="block">или выйдут в ближайший месяц</Box>
                 </Heading>
 

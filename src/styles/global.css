@@ -1,0 +1,16 @@
+.auth-page {
+    background-image: url("/fon7.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ee8b05;
+}
+
+.auth-page button {
+    color: #ee8b05 !important; /* Цвет текста на кнопках */
+    border-color: #ee8b05 !important; /* Граница кнопки */
+}

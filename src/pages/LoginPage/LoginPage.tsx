@@ -1,6 +1,5 @@
 import {useState, FormEvent} from "react";
-import {Button, Fieldset, Input, Stack, Center} from "@chakra-ui/react";
-import {Field} from "components/ui/field";
+import {chakra, Stack, Button, Center, Input, Text, Box} from "@chakra-ui/react";
 import {useAuth} from "hooks/api/useAuth.ts";
 import styles from "./LoginPage.module.css";
 import {CustomLink} from "components/ui/CustomLink";
@@ -16,49 +15,44 @@ export const LoginPage = () => {
     };
 
     return (
-        <Center paddingTop={20}>
-            <form className={styles.form} onSubmit={handleLogin}>
-                <Fieldset.Root size="lg" maxW="md">
-                    <Stack>
-                        <Fieldset.Legend>Вход</Fieldset.Legend>
-                        <Fieldset.HelperText>
+        <Box className="auth-page"> {/*класс для фона */}
+            <Center paddingTop={20}>
+                <chakra.form className={styles.form} onSubmit={handleLogin}>
+                    <Stack gap="4">
+                        <Text fontSize="sm" textAlign="center">
                             Введите логин и пароль для входа
-                        </Fieldset.HelperText>
+                        </Text>
                         {loginUser.isError && (
-                            <p style={{color: "red"}}>Ошибка входа. Попробуйте снова.</p>
+                            <Text color="red.500" fontSize="sm" textAlign="center">
+                                Ошибка входа. Попробуйте снова.
+                            </Text>
                         )}
-                    </Stack>
 
-                    <Fieldset.Content>
-                        <Field label="Логин">
-                            <Input
-                                name="login"
-                                value={username}
-                                required
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </Field>
+                        <Input
+                            name="login"
+                            placeholder="Логин"
+                            value={username}
+                            required
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
 
-                        <Field label="Пароль">
-                            <Input
-                                name="password"
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </Field>
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="Пароль"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
                         <CustomLink to="/register" color="blue.500">
                             Зарегистрируйтесь
                         </CustomLink>
-                    </Fieldset.Content>
 
-                    <Button type="submit">
-                        Войти
-                    </Button>
-                </Fieldset.Root>
-            </form>
-        </Center>
+                        <Button type="submit">Войти</Button>
+                    </Stack>
+                </chakra.form>
+            </Center>
+        </Box>
     );
 };

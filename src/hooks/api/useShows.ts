@@ -17,7 +17,7 @@ export const useShows = () => {
         });
     };
 
-    const addToFavorites = useMutation({
+    const addToFavoritesUpcoming = useMutation({
         mutationFn: async (dbID: number) => {
             const {data: showData} = await apiClient.get(`/shows/movie/${dbID}`);
             if (!showData) {
@@ -40,5 +40,5 @@ export const useShows = () => {
         },
     });
 
-    return {getUpcomingMovies, addToFavorites};
+    return {getUpcomingMovies, addToFavoritesUpcoming: addToFavoritesUpcoming};
 };
