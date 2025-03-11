@@ -25,7 +25,10 @@ export function App(): ReactNode {
                 type: toasterData.type,
                 description: toasterData.description,
             });
-            clearToaster(); // Очищаем тост после показа
+            const timer = setTimeout(() => {
+                clearToaster();
+            }, 3000);
+            return () => clearTimeout(timer);
         }
     }, [toasterData, clearToaster]);
 

@@ -6,14 +6,16 @@ import {NavigationBar} from "components/NavigationBar";
 import {useMovieSearch} from "hooks/api/useMovieSearch.ts";
 import {useUser} from "hooks/api/useUser.ts";
 import {Movie} from "hooks/types/Movie.ts";
+import {AxiosError} from "axios";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
     const [added, setAdded] = useState<boolean>(false);
     const [storedMovie, setStoredMovie] = useState<Movie | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const {addToFavorites} = useUser();
-    const {mutateAsync: addToFavoritesAction} = addToFavorites;
+    const {mutateAsync: addToFavoritesAction, isSuccess, isError, error} = addToFavorites;
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -27,29 +29,37 @@ export const AddByImdbPage = () => {
     };
 
     const imdbID = extractImdbId(imdbUrl);
-    const {data: movieData, isFetching, error} = useMovieSearch(imdbID);
+    const {data: movieData, isFetching} = useMovieSearch(imdbID);
 
     if (movieData && !storedMovie) {
         setStoredMovie(movieData);
     }
 
+    useEffect(() => {
+        if (isSuccess) {
+            setAdded(true);
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError && error instanceof AxiosError) {
+            const serverMessage = error.response?.data?.error || "Ошибка при добавлении в избранное (фронтенд)";
+            setErrorMessage(serverMessage);
+        }
+    }, [isError, error]);
+
     const handleAddToFavorites = async () => {
         if (!storedMovie) return;
 
-        await addToFavoritesAction(
-            {id: storedMovie.id, type: storedMovie.media_type},
-            {
-                onSuccess: () => {
-                    setAdded(true);
-                },
-            }
-        );
+        try {
+            await addToFavoritesAction({id: storedMovie.id, type: storedMovie.media_type});
+        } catch (err) {
+            console.error("Ошибка добавления в избранное:", err);
+        }
     };
 
     const handleClear = () => {
         setImdbUrl("");
-        setStoredMovie(null);
-        setAdded(false);
         inputRef.current?.focus();
     };
 
@@ -76,7 +86,7 @@ export const AddByImdbPage = () => {
                 </Box>
 
                 {isFetching && <Text>Загрузка...</Text>}
-                {error && <Text color="red.500">❌ Ошибка при поиске</Text>}
+                {errorMessage && <Text color="red.500">❌ {errorMessage}</Text>}
 
                 {storedMovie && (
                     <MovieCard

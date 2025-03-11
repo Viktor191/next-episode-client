@@ -14,7 +14,8 @@ export const useUser = () => {
                 const {data} = await apiClient.get("/users/me/favorites");
                 return data;
             },
-            refetchOnMount: true,
+            refetchOnWindowFocus: true,
+            staleTime: 1000 * 60 * 1,
         });
     };
 

@@ -3,11 +3,16 @@ import {MovieCard} from "components/MovieCard";
 import styles from "./FavoritesPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
 import {useUser} from "hooks/api/useUser.ts";
+import {useEffect} from "react";
 
 export const FavoritesPage = () => {
     const {getMyFavorites, removeMyFavorite} = useUser();
     const {data: favorites = [], isFetching, refetch} = getMyFavorites();
     const {mutateAsync: removeMyFavoriteAction} = removeMyFavorite;
+
+    useEffect(() => {
+        refetch();
+    }, [refetch]);
 
     return (
         <>
