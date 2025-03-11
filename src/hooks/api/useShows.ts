@@ -2,7 +2,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient.ts";
 import {Movie} from "hooks/types/Movie";
 import {useGlobalStore} from "stores/useGlobalStore";
-import {AxiosError} from "axios";
 
 
 export const useShows = () => {
@@ -45,20 +44,6 @@ export const useShows = () => {
                 type: "success",
                 description: "Фильм успешно добавлен в избранное!",
             });
-        },
-        onError: (error: AxiosError<{ error: string }>, variables: number) => {
-            if (error.response && error.response.status === 400) {
-                queryClient.setQueryData<Movie[]>(["upcomingMovies"], (oldMovies = []) =>
-                    oldMovies.map((movie) =>
-                        movie.id === variables ? {...movie, isAdded: true} : movie
-                    )
-                );
-                setToasterData({
-                    title: "Already added",
-                    type: "info",
-                    description: "The movie was already added to favorites",
-                });
-            }
         },
     });
 

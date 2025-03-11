@@ -14,7 +14,7 @@ export const UpcomingPage = () => {
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(false);
-    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set()); // Храним добавленные фильмы
+    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set());
 
     const handleToggle = () => {
         setFilterByCurrentYear((prev) => !prev);
@@ -22,7 +22,7 @@ export const UpcomingPage = () => {
 
     const handleAddToFavorites = async (movieId: number) => {
         await addToFavoritesAction(movieId);
-        setAddedMovies((prev) => new Set(prev).add(movieId)); // Добавляем фильм в локальное состояние
+        setAddedMovies((prev) => new Set(prev).add(movieId));
     };
 
     const filteredMovies: Movie[] = filterMoviesByYear(upcomingMovies, filterByCurrentYear);
