@@ -14,9 +14,15 @@ export const UpcomingPage = () => {
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(false);
+    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set()); // Храним добавленные фильмы
 
     const handleToggle = () => {
         setFilterByCurrentYear((prev) => !prev);
+    };
+
+    const handleAddToFavorites = async (movieId: number) => {
+        await addToFavoritesAction(movieId);
+        setAddedMovies((prev) => new Set(prev).add(movieId)); // Добавляем фильм в локальное состояние
     };
 
     const filteredMovies: Movie[] = filterMoviesByYear(upcomingMovies, filterByCurrentYear);
@@ -26,8 +32,12 @@ export const UpcomingPage = () => {
             <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>
-                    <Box as="span" display="block">Фильмы, которые идут в Кинотеатрах</Box>
-                    <Box as="span" display="block">или выйдут в ближайший месяц</Box>
+                    <Box as="span" display="block">
+                        Фильмы, которые идут в Кинотеатрах
+                    </Box>
+                    <Box as="span" display="block">
+                        или выйдут в ближайший месяц
+                    </Box>
                 </Heading>
 
                 <Box className={styles.searchContainer}>
@@ -49,8 +59,12 @@ export const UpcomingPage = () => {
                                 key={movie.id}
                                 movie={movie}
                                 actionButton={
-                                    <Button colorScheme="green" onClick={() => addToFavoritesAction(movie.id)}>
-                                        Добавить в избранное
+                                    <Button
+                                        colorScheme={addedMovies.has(movie.id) ? "gray" : "green"}
+                                        onClick={() => handleAddToFavorites(movie.id)}
+                                        disabled={addedMovies.has(movie.id)}
+                                    >
+                                        {addedMovies.has(movie.id) ? "✅ Добавлено" : "Добавить в избранное"}
                                     </Button>
                                 }
                             />
