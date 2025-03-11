@@ -1,5 +1,5 @@
 .auth-page {
-    background-image: url("./fon7.jpeg");
+    background-image: url("/fon7.jpeg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -14,3 +14,5 @@
     color: #ee8b05 !important;
     border-color: #ee8b05 !important;
 }
+
+/* background #051e2c */

@@ -2,7 +2,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserFavoriteResponse} from "hooks/types/User";
 import {apiClient} from "helpers/apiClient.ts";
 import {useGlobalStore} from "stores/useGlobalStore";
-import {AxiosError} from "axios";
 
 export const useUser = () => {
     const queryClient = useQueryClient();
@@ -44,10 +43,9 @@ export const useUser = () => {
 
             const previousFavorites = queryClient.getQueryData<UserFavoriteResponse[]>(["myFavorites"]) || [];
 
-            // Оптимистично добавляем фильм в избранное перед запросом
             queryClient.setQueryData(["myFavorites"], [...previousFavorites, {id: newMovie.id, type: newMovie.type}]);
 
-            return {previousFavorites}; // Возвращаем для возможного отката
+            return {previousFavorites};
         },
         onSuccess: (newMovie) => {
             if (!newMovie || !newMovie.id) return;
@@ -65,16 +63,8 @@ export const useUser = () => {
                 description: newMovie.message || "Фильм успешно добавлен в избранное!",
             });
         },
-        onError: (error: AxiosError<{ error: string }>, _, context) => {
-            // Откатываем к предыдущему состоянию, если запрос не удался
+        onError: (_, __, context) => {
             queryClient.setQueryData(["myFavorites"], context?.previousFavorites);
-
-            const errorMessage = error.response?.data?.error || "Ошибка при добавлении в избранное";
-            setToasterData({
-                title: "Ошибка",
-                type: "error",
-                description: errorMessage,
-            });
         },
     });
 

@@ -1,9 +1,11 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient.ts";
 import {Movie} from "hooks/types/Movie.ts";
+// import {useGlobalStore} from "stores/useGlobalStore.ts";
 
 export const useShows = () => {
     const queryClient = useQueryClient();
+    // const {setToasterData} = useGlobalStore();
 
     const getUpcomingMovies = () => {
         return useQuery<Movie[]>({
