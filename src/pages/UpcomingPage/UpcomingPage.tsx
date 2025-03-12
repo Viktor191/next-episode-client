@@ -4,7 +4,7 @@ import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
 import {useShows} from "hooks/api/useShows";
-import {ToggleFilter} from "components/ToggleFilter/ToggleFilter.tsx";
+import {ToggleFilter} from "components/ToggleFilter/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
 

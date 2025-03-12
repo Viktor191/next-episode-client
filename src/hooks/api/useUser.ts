@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserFavoriteResponse} from "hooks/types/User";
-import {apiClient} from "helpers/apiClient.ts";
+import {apiClient} from "helpers/apiClient";
 import {useGlobalStore} from "stores/useGlobalStore";
 
 export const useUser = () => {

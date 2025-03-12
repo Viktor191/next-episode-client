@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "helpers/apiClient.ts";
-import {Movie} from "hooks/types/Movie.ts";
+import {apiClient} from "helpers/apiClient";
+import {Movie} from "hooks/types/Movie";
 
 export const useMovieSearch = (imdbID: string | null) => {
     return useQuery<Movie>({

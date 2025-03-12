@@ -1,7 +1,7 @@
 import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
-import {apiClient} from "helpers/apiClient.ts";
-import {useGlobalStore} from "stores/useGlobalStore.ts";
+import {apiClient} from "helpers/apiClient";
+import {useGlobalStore} from "stores/useGlobalStore";
 
 export const useRegister = () => {
     const navigate = useNavigate();

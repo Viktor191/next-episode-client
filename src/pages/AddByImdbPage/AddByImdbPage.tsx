@@ -3,9 +3,9 @@ import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useMovieSearch} from "hooks/api/useMovieSearch.ts";
-import {useUser} from "hooks/api/useUser.ts";
-import {Movie} from "hooks/types/Movie.ts";
+import {useMovieSearch} from "hooks/api/useMovieSearch";
+import {useUser} from "hooks/api/useUser";
+import {Movie} from "hooks/types/Movie";
 import {AxiosError} from "axios";
 
 export const AddByImdbPage = () => {

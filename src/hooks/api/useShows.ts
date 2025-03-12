@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiClient} from "helpers/apiClient.ts";
+import {apiClient} from "helpers/apiClient";
 import {Movie} from "hooks/types/Movie";
 import {useGlobalStore} from "stores/useGlobalStore";
 

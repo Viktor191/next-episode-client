@@ -22,7 +22,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 v7_startTransition: false,
                 v7_relativeSplatPath: true,
             }}>
-
                 <Provider>
                     <App/>
                 </Provider>

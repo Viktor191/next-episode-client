@@ -3,7 +3,7 @@ import {Button, Fieldset, Input, Stack, Center, Box} from "@chakra-ui/react";
 import {Field} from "components/ui/field";
 import {useNavigate} from "react-router-dom";
 import styles from "./RegisterPage.module.css";
-import {useRegister} from "hooks/api/useRegister.ts";
+import {useRegister} from "hooks/api/useRegister";
 
 export const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");

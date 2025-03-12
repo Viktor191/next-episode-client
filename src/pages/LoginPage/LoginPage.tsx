@@ -1,6 +1,6 @@
 import {useState, useEffect, FormEvent} from "react";
 import {chakra, Stack, Button, Center, Input, Text, Box} from "@chakra-ui/react";
-import {useAuth} from "hooks/api/useAuth.ts";
+import {useAuth} from "hooks/api/useAuth";
 import styles from "./LoginPage.module.css";
 import {Link} from "react-router-dom";
 

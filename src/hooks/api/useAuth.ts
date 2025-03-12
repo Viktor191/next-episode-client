@@ -1,6 +1,6 @@
 import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
-import {apiClient} from "helpers/apiClient.ts";
+import {apiClient} from "helpers/apiClient";
 
 export const useAuth = () => {
     const navigate = useNavigate();

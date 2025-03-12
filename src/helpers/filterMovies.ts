@@ -1,4 +1,4 @@
-import {Movie} from "hooks/types/Movie.ts";
+import {Movie} from "hooks/types/Movie";
 
 export const filterMoviesByYear = (movies: Movie[], filterByCurrentYear: boolean): Movie[] => {
     if (!filterByCurrentYear) return movies;

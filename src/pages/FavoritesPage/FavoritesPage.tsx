@@ -2,7 +2,7 @@ import {Box, Button, Heading, SimpleGrid, Text} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./FavoritesPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useUser} from "hooks/api/useUser.ts";
+import {useUser} from "hooks/api/useUser";
 import {useEffect} from "react";
 
 export const FavoritesPage = () => {
