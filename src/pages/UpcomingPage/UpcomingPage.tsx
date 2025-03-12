@@ -3,17 +3,17 @@ import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useShows} from "hooks/api/useShows.ts";
-import {ToggleFilter} from "components/ui/ToggleFilter.tsx";
-import {filterMoviesByYear} from "helpers/filterMovies.ts";
-import {Movie} from "hooks/types/Movie.ts";
+import {useShows} from "hooks/api/useShows";
+import {ToggleFilter} from "components/ToggleFilter/ToggleFilter.tsx";
+import {filterMoviesByYear} from "helpers/filterMovies";
+import {Movie} from "hooks/types/Movie";
 
 export const UpcomingPage = () => {
     const {getUpcomingMovies, addToFavoritesUpcoming} = useShows();
     const {data: upcomingMovies = [], isFetching, refetch} = getUpcomingMovies();
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
-    const [filterByCurrentYear, setFilterByCurrentYear] = useState(false);
+    const [filterByCurrentYear, setFilterByCurrentYear] = useState(true);
     const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set());
 
     const handleToggle = () => {

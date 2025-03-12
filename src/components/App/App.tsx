@@ -1,6 +1,6 @@
 import {Routes, Route, Navigate} from "react-router-dom";
 import {lazy, ReactNode, Suspense, useEffect} from "react";
-import {routes} from "../../routes.ts";
+import {routes} from "../../routes";
 import {Toaster, toaster} from "components/ui/toaster";
 import {useGlobalStore} from "stores/useGlobalStore";
 import {ProtectedRoute} from "components/ProtectedRoute";

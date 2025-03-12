@@ -60,3 +60,21 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+.timer {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFD700;
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFA500, 0 0 15px #FF8C00;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 5px #FFD700, 0 0 10px #FFA500, 0 0 15px #FF8C00;
+    }
+    100% {
+        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 0 0 30px #FF8C00;
+    }
+}

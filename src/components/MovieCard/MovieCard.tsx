@@ -11,7 +11,7 @@ export const MovieCard = ({movie, actionButton}: MovieCardProps) => {
     const getMediaType = (type?: string): string => {
         if (type === "movie") return "Фильм";
         if (type === "tv") return "Сериал";
-        return ""; // Пустая строка для всех остальных случаев
+        return "";
     };
 
     return (

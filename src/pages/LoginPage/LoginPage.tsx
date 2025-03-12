@@ -1,30 +1,63 @@
-import {useState, FormEvent} from "react";
+import {useState, useEffect, FormEvent} from "react";
 import {chakra, Stack, Button, Center, Input, Text, Box} from "@chakra-ui/react";
 import {useAuth} from "hooks/api/useAuth.ts";
 import styles from "./LoginPage.module.css";
-import {CustomLink} from "components/ui/CustomLink";
+import {Link} from "react-router-dom";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const {loginUser} = useAuth();
 
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | undefined;
+
+        if (loading) {
+            setProgress(0);
+            interval = setInterval(() => {
+                setProgress((prev) => (prev < 99 ? prev + 1 : 99));
+            }, 30); // Скорость обновления счётчика
+        }
+
+        if (!loading) {
+            clearInterval(interval);
+        }
+
+        return () => clearInterval(interval);
+    }, [loading]);
+
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        loginUser.mutate({username, password});
+        setLoading(true);
+
+        loginUser.mutate({username, password}, {
+            onSettled: () => {
+                setLoading(false);
+            }
+        });
     };
 
     return (
-        <Box className="auth-page"> {/*класс для фона */}
+        <Box className="auth-page">
             <Center paddingTop={20}>
                 <chakra.form className={styles.form} onSubmit={handleLogin}>
                     <Stack gap="4">
                         <Text fontSize="sm" textAlign="center">
                             Введите логин и пароль для входа
                         </Text>
+
                         {loginUser.isError && (
                             <Text color="red.500" fontSize="sm" textAlign="center">
                                 Ошибка входа. Попробуйте снова.
+                            </Text>
+                        )}
+
+                        {loading && (
+                            <Text className={styles.timer}>
+                                Загрузка... {progress}%
                             </Text>
                         )}
 
@@ -45,11 +78,13 @@ export const LoginPage = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <CustomLink to="/register" color="blue.500">
+                        <Link to="/register" color="blue.500">
                             Зарегистрируйтесь
-                        </CustomLink>
+                        </Link>
 
-                        <Button type="submit">Войти</Button>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? "Вход..." : "Войти"}
+                        </Button>
                     </Stack>
                 </chakra.form>
             </Center>
