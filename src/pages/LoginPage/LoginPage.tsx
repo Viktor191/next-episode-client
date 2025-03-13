@@ -45,22 +45,15 @@ export const LoginPage = () => {
             <Center paddingTop={20}>
                 <chakra.form className={styles.form} onSubmit={handleLogin}>
                     <Stack gap="4">
+
                         <Text fontSize="sm" textAlign="center">
                             Введите логин и пароль для входа
                         </Text>
-
-                        {loginUser.isError && (
-                            <Text color="red.500" fontSize="sm" textAlign="center">
-                                Ошибка входа. Попробуйте снова.
-                            </Text>
-                        )}
-
                         {loading && (
                             <Text className={styles.timer}>
                                 Загрузка... {progress}%
                             </Text>
                         )}
-
                         <Input
                             name="login"
                             placeholder="Логин"
@@ -86,6 +79,7 @@ export const LoginPage = () => {
                             {loading ? "Вход..." : "Войти"}
                         </Button>
                     </Stack>
+
                 </chakra.form>
             </Center>
         </Box>

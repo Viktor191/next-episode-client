@@ -12,7 +12,7 @@ export const AddByNamePage = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const {searchByName} = useSearch();
-    const {data: results = [], isFetching, error} = searchByName(searchTerm);
+    const {data: results = [], isFetching} = searchByName(searchTerm);
 
     const {addToFavorites} = useUser();
     const {mutateAsync: addToFavoritesAction} = addToFavorites;
@@ -59,7 +59,6 @@ export const AddByNamePage = () => {
                 </Box>
 
                 {isFetching && <Text>Загрузка...</Text>}
-                {error && <Text color="red.500">❌ Ошибка при поиске</Text>}
 
                 {results.length > 0 && (
                     <SimpleGrid columns={{base: 1, md: 2, lg: 1}} gap={6} className={styles.grid}>

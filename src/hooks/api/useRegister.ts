@@ -1,11 +1,10 @@
 import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
 import {apiClient} from "helpers/apiClient";
-import {useGlobalStore} from "stores/useGlobalStore";
+import {toaster} from "components/ui/toaster";
 
 export const useRegister = () => {
     const navigate = useNavigate();
-    const {setToasterData} = useGlobalStore();
 
     const registerUser = useMutation({
         mutationFn: async (data: { username: string; password: string }) => {
@@ -13,7 +12,7 @@ export const useRegister = () => {
             return response.data;
         },
         onSuccess: () => {
-            setToasterData({
+            toaster.create({
                 title: "Регистрация успешна",
                 type: "success",
                 description: "Вы успешно зарегистрировались!",

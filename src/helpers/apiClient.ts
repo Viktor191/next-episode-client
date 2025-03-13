@@ -1,5 +1,6 @@
 import axios, {AxiosError} from "axios";
 import {useGlobalStore} from "stores/useGlobalStore";
+import {toaster} from "components/ui/toaster";
 
 const getToken = () => localStorage.getItem("authToken");
 
@@ -43,6 +44,15 @@ apiClient.interceptors.response.use(
         if (error.response) {
             const {status, data} = error.response;
             console.log(`❌ Ошибка ${status}: ${data.error}`);
+
+            if (status >= 400 && status < 600) {
+                toaster.create({
+                    title: "Ошибка",
+                    type: "error",
+                    description: data.error || "Произошла ошибка",
+                });
+            }
+
             useGlobalStore.getState().setError(data.error);
         }
         return Promise.reject(error);
