@@ -35,9 +35,6 @@ export const UpcomingPage = () => {
                     <Box as="span" display="block">
                         Фильмы, которые идут в Кинотеатрах
                     </Box>
-                    <Box as="span" display="block">
-                        или выйдут в ближайший месяц
-                    </Box>
                 </Heading>
 
                 <Box className={styles.searchContainer}>
