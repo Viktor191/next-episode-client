@@ -1,36 +1,10 @@
 import {Routes, Route, Navigate} from "react-router-dom";
-import {lazy, ReactNode, Suspense, useEffect} from "react";
+import {lazy, ReactNode, Suspense} from "react";
 import {routes} from "../../routes";
-import {Toaster, toaster} from "components/ui/toaster";
-import {useGlobalStore} from "stores/useGlobalStore";
+import {Toaster} from "components/ui/toaster";
 import {ProtectedRoute} from "components/ProtectedRoute";
 
 export function App(): ReactNode {
-    const {error, toasterData, clearToaster} = useGlobalStore();
-
-    useEffect(() => {
-        if (error) {
-            toaster.create({
-                title: "Ошибка",
-                type: "error",
-                description: error,
-            });
-        }
-    }, [error]);
-
-    useEffect(() => {
-        if (toasterData) {
-            toaster.create({
-                title: toasterData.title,
-                type: toasterData.type,
-                description: toasterData.description,
-            });
-            const timer = setTimeout(() => {
-                clearToaster();
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [toasterData, clearToaster]);
 
     return (
         <>
