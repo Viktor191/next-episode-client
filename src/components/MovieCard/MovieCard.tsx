@@ -20,6 +20,7 @@ export const MovieCard = ({movie, actionButton}: MovieCardProps) => {
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={`${movie.title} (${getMediaType(movie.media_type)})`}
                 className={styles.image}
+                onError={(e) => (e.currentTarget.src = "/fallback.jpeg")}
             />
             <Box className={styles.cardContent}>
                 <Text className={styles.label}><strong>Название:</strong> {movie.title}</Text>
