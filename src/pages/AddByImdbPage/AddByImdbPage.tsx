@@ -3,19 +3,17 @@ import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useMovieSearch} from "hooks/api/useMovieSearch";
 import {useUser} from "hooks/api/useUser";
 import {Movie} from "hooks/types/Movie";
-import {AxiosError} from "axios";
+import {useSearch} from "hooks/api/useSearch";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
     const [added, setAdded] = useState<boolean>(false);
     const [storedMovie, setStoredMovie] = useState<Movie | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const {addToFavorites} = useUser();
-    const {mutateAsync: addToFavoritesAction, isSuccess, isError, error} = addToFavorites;
+    const {mutateAsync: addToFavoritesAction, isSuccess} = addToFavorites;
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +27,9 @@ export const AddByImdbPage = () => {
     };
 
     const imdbID = extractImdbId(imdbUrl);
-    const {data: movieData, isFetching} = useMovieSearch(imdbID);
+
+    const {searchByImdbID} = useSearch();
+    const {data: movieData, isFetching} = searchByImdbID(imdbID);
 
     if (movieData && !storedMovie) {
         setStoredMovie(movieData);
@@ -40,13 +40,6 @@ export const AddByImdbPage = () => {
             setAdded(true);
         }
     }, [isSuccess]);
-
-    useEffect(() => {
-        if (isError && error instanceof AxiosError) {
-            const serverMessage = error.response?.data?.error || "Ошибка при добавлении в избранное (фронтенд)";
-            setErrorMessage(serverMessage);
-        }
-    }, [isError, error]);
 
     const handleAddToFavorites = async () => {
         if (!storedMovie) return;
@@ -60,6 +53,8 @@ export const AddByImdbPage = () => {
 
     const handleClear = () => {
         setImdbUrl("");
+        setStoredMovie(null);
+        setAdded(false);
         inputRef.current?.focus();
     };
 
@@ -86,7 +81,6 @@ export const AddByImdbPage = () => {
                 </Box>
 
                 {isFetching && <Text>Загрузка...</Text>}
-                {errorMessage && <Text color="red.500">❌ {errorMessage}</Text>}
 
                 {storedMovie && (
                     <MovieCard

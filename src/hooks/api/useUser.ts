@@ -15,7 +15,6 @@ export const useUser = () => {
                 return data;
             },
             refetchOnWindowFocus: true,
-            staleTime: 1000 * 60 * 1,
         });
     };
 

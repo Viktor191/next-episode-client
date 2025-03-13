@@ -3,14 +3,16 @@ import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
 import {NavigationBar} from "components/NavigationBar";
-import {useMovieSearchByName} from "hooks/api/useMovieSearch";
 import {useUser} from "hooks/api/useUser";
+import {useSearch} from "hooks/api/useSearch";
 
 export const AddByNamePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>(""); // Ввод пользователя
     const [searchTerm, setSearchTerm] = useState<string>(""); // Фактический запрос
     const inputRef = useRef<HTMLInputElement>(null);
-    const {data: results = [], isFetching, error} = useMovieSearchByName(searchTerm);
+
+    const {searchByName} = useSearch();
+    const {data: results = [], isFetching, error} = searchByName(searchTerm);
 
     const {addToFavorites} = useUser();
     const {mutateAsync: addToFavoritesAction} = addToFavorites;
