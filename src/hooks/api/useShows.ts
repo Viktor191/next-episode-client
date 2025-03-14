@@ -1,10 +1,9 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {apiClient} from "helpers/apiClient";
 import {Movie} from "hooks/types/Movie";
 import {toaster} from "components/ui/toaster";
 
 export const useShows = () => {
-    const queryClient = useQueryClient();
 
     const getUpcomingMovies = () => {
         return useQuery<Movie[]>({
@@ -29,12 +28,7 @@ export const useShows = () => {
 
             return {...response.data, id: showData.id, media_type: showData.media_type};
         },
-        onSuccess: (newFavorite) => {
-            queryClient.setQueryData<Movie[]>(["upcomingMovies"], (oldMovies = []) =>
-                oldMovies.map((movie) =>
-                    movie.id === newFavorite.id ? {...movie, isAdded: true} : movie
-                )
-            );
+        onSuccess: () => {
             toaster.create({
                 title: "Добавлено в избранное",
                 type: "success",

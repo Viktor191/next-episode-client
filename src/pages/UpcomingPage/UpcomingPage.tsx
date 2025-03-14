@@ -37,7 +37,7 @@ export const UpcomingPage = () => {
 
     return (
         <>
-            <Box className={styles.container}>
+            <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>
                     <Box as="span" display="block">
                         Фильмы, которые идут в Кинотеатрах

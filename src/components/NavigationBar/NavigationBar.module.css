@@ -8,8 +8,10 @@
 
 .navLinks {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     flex-wrap: wrap;
+    justify-content: center; /* Центрируем ссылки */
+    flex-grow: 1; /* Позволяет равномерно распределять пространство */
 }
 
 .link {

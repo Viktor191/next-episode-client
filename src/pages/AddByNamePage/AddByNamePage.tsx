@@ -1,4 +1,4 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
@@ -32,9 +32,13 @@ export const AddByNamePage = () => {
         inputRef.current?.focus();
     };
 
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
     return (
         <>
-            <Box className={styles.container}>
+            <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>Поиск фильма или сериала по названию</Heading>
 
                 <Box className={styles.searchContainer}>

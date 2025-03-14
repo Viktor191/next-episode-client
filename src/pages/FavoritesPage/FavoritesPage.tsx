@@ -16,14 +16,14 @@ export const FavoritesPage = () => {
     return (
         <>
             {/*<NavigationBar/>*/}
-            <Box className={styles.container}>
+            <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>Избранное</Heading>
                 <Box className={styles.searchContainer}>
                     <Button colorScheme="blue" onClick={() => refetch()}>
                         Обновить список
                     </Button>
                 </Box>
-                {isFetching && <Text>Загрузка...</Text>}
+                {/*{isFetching && <Text>Загрузка...</Text>}*/}
                 {!isFetching && favorites.length === 0 && (
                     <Text className={styles.emptyMessage}>Нет избранных фильмов или сериалов</Text>
                 )}

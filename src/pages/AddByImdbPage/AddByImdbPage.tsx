@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
+import {Box, Button, Heading, Input} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {useUser} from "hooks/api/useUser";
@@ -28,7 +28,7 @@ export const AddByImdbPage = () => {
     const imdbID = extractImdbId(imdbUrl);
 
     const {searchByImdbID} = useSearch();
-    const {data: movieData, isFetching} = searchByImdbID(imdbID);
+    const {data: movieData} = searchByImdbID(imdbID);
 
     if (movieData && !storedMovie) {
         setStoredMovie(movieData);
@@ -59,9 +59,11 @@ export const AddByImdbPage = () => {
 
     return (
         <>
-            <Box className={styles.container}>
+            <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>
-                    Добавить фильм или сериал по IMDb ID
+                    <a href="https://www.imdb.com" target="_blank" rel="noopener noreferrer">
+                        Добавить фильм или сериал по IMDb ID
+                    </a>
                 </Heading>
 
                 <Box className={styles.searchContainer}>
@@ -77,8 +79,6 @@ export const AddByImdbPage = () => {
                         Очистить
                     </Button>
                 </Box>
-
-                {isFetching && <Text>Загрузка...</Text>}
 
                 {storedMovie && (
                     <MovieCard

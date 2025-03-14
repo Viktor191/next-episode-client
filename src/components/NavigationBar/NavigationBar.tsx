@@ -14,7 +14,7 @@ export const NavigationBar = () => {
 
     return (
         <Box className={styles.navigationBar}>
-            <Flex justifyContent="space-between" alignItems="center" wrap="wrap">
+            <Flex justifyContent="center" className={styles.navLinks}>
                 <Flex className={styles.navLinks}>
                     <NavLink to="/favorites" className={({isActive}) => isActive ? styles.activeLink : styles.link}>
                         Избранное
