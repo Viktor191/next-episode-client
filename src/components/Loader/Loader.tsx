@@ -1,21 +1,18 @@
-import {useState, useEffect} from "react";
+import {ProgressCircle, AbsoluteCenter} from "@chakra-ui/react";
 import styles from "./Loader.module.css";
 
 export const Loader = () => {
-    const [progress, setProgress] = useState(0);
-
-    useEffect(() => {
-        setProgress(0);
-        const interval = setInterval(() => {
-            setProgress((prev) => (prev < 99 ? prev + 1 : 99));
-        }, 30); // Обновление каждые 30ms
-
-        return () => clearInterval(interval);
-    }, []);
-
     return (
-        <div className={styles.loaderContainer}>
-            <p className={styles.timer}>Загрузка... {progress}%</p>
+        <div className={styles["loader-overlay"]}>
+            <ProgressCircle.Root value={null} size="lg">
+                <ProgressCircle.Circle>
+                    <ProgressCircle.Track/>
+                    <ProgressCircle.Range stroke="orange"/>
+                </ProgressCircle.Circle>
+                <AbsoluteCenter>
+                    <ProgressCircle.ValueText/>
+                </AbsoluteCenter>
+            </ProgressCircle.Root>
         </div>
     );
 };

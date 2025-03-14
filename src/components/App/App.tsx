@@ -4,12 +4,13 @@ import {routes} from "../../routes";
 import {Toaster} from "components/ui/toaster";
 import {ProtectedRoute} from "components/ProtectedRoute";
 import {NavigationBar} from "components/NavigationBar";
+import {Loader} from "components/Loader";
 
 export function App(): ReactNode {
 
     return (
         <>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader/>}>
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace/>}/>
                     {routes.map(({path, component, isProtected}) => {
