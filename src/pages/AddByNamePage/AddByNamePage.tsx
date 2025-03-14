@@ -2,7 +2,6 @@ import {useState, useRef} from "react";
 import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
-import {NavigationBar} from "components/NavigationBar";
 import {useUser} from "hooks/api/useUser";
 import {useSearch} from "hooks/api/useSearch";
 
@@ -35,7 +34,6 @@ export const AddByNamePage = () => {
 
     return (
         <>
-            <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>Поиск фильма или сериала по названию</Heading>
 

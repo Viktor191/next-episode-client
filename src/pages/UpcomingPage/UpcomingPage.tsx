@@ -2,7 +2,6 @@ import {useState} from "react";
 import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
-import {NavigationBar} from "components/NavigationBar";
 import {useShows} from "hooks/api/useShows";
 import {ToggleFilter} from "components/ToggleFilter/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
@@ -29,7 +28,6 @@ export const UpcomingPage = () => {
 
     return (
         <>
-            <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>
                     <Box as="span" display="block">

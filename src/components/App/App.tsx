@@ -3,6 +3,7 @@ import {lazy, ReactNode, Suspense} from "react";
 import {routes} from "../../routes";
 import {Toaster} from "components/ui/toaster";
 import {ProtectedRoute} from "components/ProtectedRoute";
+import {NavigationBar} from "components/NavigationBar";
 
 export function App(): ReactNode {
 
@@ -24,6 +25,7 @@ export function App(): ReactNode {
                                 element={
                                     isProtected ? (
                                         <ProtectedRoute>
+                                            <NavigationBar/>
                                             <Component/>
                                         </ProtectedRoute>
                                     ) : (

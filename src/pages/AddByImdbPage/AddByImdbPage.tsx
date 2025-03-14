@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from "react";
 import {Box, Button, Heading, Input, Text} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
-import {NavigationBar} from "components/NavigationBar";
 import {useUser} from "hooks/api/useUser";
 import {Movie} from "hooks/types/Movie";
 import {useSearch} from "hooks/api/useSearch";
@@ -60,7 +59,6 @@ export const AddByImdbPage = () => {
 
     return (
         <>
-            <NavigationBar/>
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>
                     Добавить фильм или сериал по IMDb ID

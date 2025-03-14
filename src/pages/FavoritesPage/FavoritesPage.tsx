@@ -1,7 +1,6 @@
 import {Box, Button, Heading, SimpleGrid, Text} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./FavoritesPage.module.css";
-import {NavigationBar} from "components/NavigationBar";
 import {useUser} from "hooks/api/useUser";
 import {useEffect} from "react";
 
@@ -16,7 +15,7 @@ export const FavoritesPage = () => {
 
     return (
         <>
-            <NavigationBar/>
+            {/*<NavigationBar/>*/}
             <Box className={styles.container}>
                 <Heading as="h2" className={styles.heading}>Избранное</Heading>
                 <Box className={styles.searchContainer}>
