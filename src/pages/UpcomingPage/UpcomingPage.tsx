@@ -6,11 +6,16 @@ import {useShows} from "hooks/api/useShows";
 import {ToggleFilter} from "components/ToggleFilter/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
+import {useUser} from "hooks/api/useUser";
+
 
 export const UpcomingPage = () => {
     const {getUpcomingMovies, addToFavoritesUpcoming} = useShows();
     const {data: upcomingMovies = [], isFetching, refetch} = getUpcomingMovies();
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
+
+    const {getMyFavorites} = useUser();
+    const {data: favoriteMovies = []} = getMyFavorites();
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(true);
     const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set());
@@ -23,8 +28,12 @@ export const UpcomingPage = () => {
         await addToFavoritesAction(movieId);
         setAddedMovies((prev) => new Set(prev).add(movieId));
     };
+    const filteredMoviesFav = upcomingMovies.filter(
+        (movie) => !favoriteMovies.some((fav) => fav.id === movie.id)
+    );
 
-    const filteredMovies: Movie[] = filterMoviesByYear(upcomingMovies, filterByCurrentYear);
+    const filteredMovies: Movie[] = filterMoviesByYear(filteredMoviesFav, filterByCurrentYear);
+
 
     return (
         <>
