@@ -18,7 +18,7 @@ export const UpcomingPage = () => {
     const {data: favoriteMovies = []} = getMyFavorites();
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(true);
-    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set());
+    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set()); // Множество добавленных фильмов для блокировки кнопки
 
     const handleToggle = () => {
         setFilterByCurrentYear((prev) => !prev);
@@ -28,6 +28,7 @@ export const UpcomingPage = () => {
         await addToFavoritesAction(movieId);
         setAddedMovies((prev) => new Set(prev).add(movieId));
     };
+
     const filteredMoviesFav = upcomingMovies.filter(
         (movie) => !favoriteMovies.some((fav) => fav.id === movie.id)
     );

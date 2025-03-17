@@ -16,6 +16,8 @@ export const AddByNamePage = () => {
     const {addToFavorites} = useUser();
     const {mutateAsync: addToFavoritesAction} = addToFavorites;
 
+    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set()); // Множество добавленных фильмов
+
     const handleSearch = () => {
         setSearchTerm(searchQuery);
     };
@@ -30,6 +32,11 @@ export const AddByNamePage = () => {
         setSearchQuery("");
         setSearchTerm("");
         inputRef.current?.focus();
+    };
+
+    const handleAddToFavorites = async (movieId: number, mediaType: 'tv' | 'movie') => {
+        await addToFavoritesAction({id: movieId, type: mediaType});
+        setAddedMovies((prev) => new Set(prev).add(movieId));
     };
 
     useEffect(() => {
@@ -69,11 +76,12 @@ export const AddByNamePage = () => {
                                 key={movie.id}
                                 movie={movie}
                                 actionButton={
-                                    <Button colorScheme="green" onClick={() => addToFavoritesAction({
-                                        id: movie.id,
-                                        type: movie.media_type
-                                    })}>
-                                        Добавить в избранное
+                                    <Button
+                                        colorScheme={addedMovies.has(movie.id) ? "gray" : "green"}
+                                        onClick={() => handleAddToFavorites(movie.id, movie.media_type)}
+                                        disabled={addedMovies.has(movie.id)}
+                                    >
+                                        {addedMovies.has(movie.id) ? "✅ Добавлено" : "Добавить в избранное"}
                                     </Button>
                                 }
                             />
