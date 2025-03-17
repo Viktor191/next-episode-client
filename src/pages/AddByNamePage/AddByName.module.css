@@ -51,4 +51,12 @@
     .container {
         padding: 20px;
     }
+
+    .input {
+        width: 100%;
+    }
+
+    .searchContainer {
+        flex-direction: column;
+    }
 }

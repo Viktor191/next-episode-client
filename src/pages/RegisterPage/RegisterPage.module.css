@@ -60,3 +60,17 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    .searchContainer {
+        flex-direction: column;
+    }
+}
