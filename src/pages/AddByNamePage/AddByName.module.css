@@ -48,7 +48,7 @@
 }
 
 @media (max-width: 768px) {
-    .searchContainer {
-        flex-direction: column;
+    .container {
+        padding: 20px;
     }
 }

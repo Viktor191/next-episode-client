@@ -4,6 +4,9 @@ import {toaster} from "components/ui/toaster";
 
 const getToken = () => localStorage.getItem("authToken");
 
+let lastErrorMessage = "";
+let errorTimeout: NodeJS.Timeout | null = null;
+
 type ServerError = {
     error: string;
 };
@@ -43,20 +46,29 @@ apiClient.interceptors.response.use(
     (error: AxiosError<ServerError>) => {
         if (error.response) {
             const {status, data} = error.response;
-            console.log(`❌ Ошибка ${status}: ${data.error}`);
+            const errorMessage = data.error || "Произошла ошибка";
+            console.log(`❌ Ошибка ${status}: ${errorMessage}`);
 
-            if (status >= 400 && status < 600) {
+            if (errorMessage !== lastErrorMessage) {
+                lastErrorMessage = errorMessage;
                 toaster.create({
                     title: "Ошибка",
                     type: "error",
-                    description: data.error || "Произошла ошибка",
+                    description: errorMessage,
                 });
+
+                // Сбрасываем ошибку через 5 секунд, чтобы избежать спама тостерами
+                if (errorTimeout) clearTimeout(errorTimeout);
+                errorTimeout = setTimeout(() => {
+                    lastErrorMessage = "";
+                }, 5000);
             }
 
-            useGlobalStore.getState().setError(data.error);
+            useGlobalStore.getState().setError(errorMessage);
         }
         return Promise.reject(error);
     }
 );
 
 export {apiClient};
+
