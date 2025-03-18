@@ -1,4 +1,4 @@
-.container {
+.auth-page {
     max-width: 400px;
     margin: 2rem auto;
     padding: 2rem;
@@ -8,69 +8,40 @@
     font-family: Arial, sans-serif;
 }
 
-.title {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
 .form {
     display: flex;
     flex-direction: column;
 }
 
-.formGroup {
-    margin-bottom: 1rem;
+.error {
+    color: red;
+    text-align: center;
+    font-size: 14px;
 }
 
-.label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.buttonGroup {
+.passwordWrapper {
+    position: relative;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 }
 
-.button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background-color: #007bff;
-    color: #fff;
+.passwordInput {
+    width: 100%;
+    padding-right: 2.5rem;
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
+    color: #555;
+    font-size: 18px;
 }
 
-.buttonSecondary {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    .input {
-        width: 100%;
-    }
-
-    .searchContainer {
-        flex-direction: column;
-    }
+.passwordToggle:hover {
+    color: #333;
 }

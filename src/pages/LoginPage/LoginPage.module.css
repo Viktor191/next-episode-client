@@ -68,7 +68,7 @@
     text-align: center;
     color: #FFD700;
     text-shadow: 0 0 5px #FFD700, 0 0 10px #FFA500, 0 0 15px #FF8C00;
-    animation: pulse 1s infinite alternate;
+    animation: pulse 3s infinite alternate;
 }
 
 @keyframes pulse {
