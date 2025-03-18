@@ -10,6 +10,16 @@ body {
     padding: 0;
 }
 
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    width: 100%;
+}
+
 .auth-page {
     background-image: url("/fon7.jpeg");
     background-size: cover;
@@ -23,21 +33,30 @@ body {
 }
 
 button {
-    color: #ee8b05 !important;
-    border-color: #ee8b05 !important;
+    color: #ee8b05;
+    border-color: #ee8b05;
+}
+
+button:hover {
+    animation: pulse-border 3s infinite alternate;
 }
 
 .auth-page button {
-    color: #ee8b05 !important;
-    border-color: #ee8b05 !important;
+    color: #ee8b05;
+    border-color: #ee8b05;
 }
 
-.page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding: 20px;
-    width: 100%;
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 5px #FFD700, 0 0 10px #FFA500, 0 0 15px #FF8C00;
+        border-color: #FFD700;
+    }
+    100% {
+        box-shadow: 0 0 10px #FF8C00, 0 0 20px #FFA500, 0 0 30px #FFD700;
+        border-color: #FF8C00;
+    }
 }
+
+
+
+

@@ -58,7 +58,7 @@ export const UpcomingPage = () => {
                 )}
 
                 {!isFetching && filteredMovies.length > 0 && (
-                    <SimpleGrid columns={{base: 1, md: 2, lg: 1}} gap={6} className={styles.grid}>
+                    <SimpleGrid columns={{base: 1, md: 1, lg: 1}} gap={6} className={styles.grid}>
                         {filteredMovies.map((movie) => (
                             <MovieCard
                                 key={movie.id}
