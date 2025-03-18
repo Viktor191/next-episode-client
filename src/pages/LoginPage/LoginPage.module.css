@@ -61,6 +61,7 @@
     cursor: pointer;
 }
 
+
 .timer {
     font-size: 18px;
     font-weight: bold;
@@ -77,4 +78,27 @@
     100% {
         text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 0 0 30px #FF8C00;
     }
+}
+
+.passwordWrapper {
+    position: relative; /* Обертка нужна для позиционирования */
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.passwordToggle {
+    position: absolute; /* Абсолютное позиционирование */
+    right: 10px; /* Отступ от правого края */
+    top: 50%; /* Размещаем по вертикали */
+    transform: translateY(-50%); /* Корректируем центрирование */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 18px;
+}
+
+.passwordToggle:hover {
+    color: #333;
 }
