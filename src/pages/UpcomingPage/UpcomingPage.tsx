@@ -65,7 +65,7 @@ export const UpcomingPage = () => {
                                 movie={movie}
                                 actionButton={
                                     <Button
-                                        colorScheme={addedMovies.has(movie.id) ? "gray" : "green"}
+                                        /*colorScheme={addedMovies.has(movie.id) ? "gray" : "green"}*/
                                         onClick={() => handleAddToFavorites(movie.id)}
                                         disabled={addedMovies.has(movie.id)}
                                     >
