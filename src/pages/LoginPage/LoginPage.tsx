@@ -4,6 +4,7 @@ import {chakra, Stack, Button, Center, Input, Text, Box} from "@chakra-ui/react"
 import {useAuth} from "hooks/api/useAuth";
 import styles from "./LoginPage.module.css";
 import {Link} from "react-router-dom";
+import {GoogleLoginButton} from "components/GoogleLoginButton";
 
 export const LoginPage = () => {
     const [username, setUsername] = useState<string>("");
@@ -66,6 +67,7 @@ export const LoginPage = () => {
                         <Button type="submit" disabled={loading}>
                             {loading ? "Вход..." : "Войти"}
                         </Button>
+                        <GoogleLoginButton/>
                     </Stack>
                 </chakra.form>
             </Center>
