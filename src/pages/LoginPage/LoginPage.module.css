@@ -4,8 +4,8 @@
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
+    max-width: 230px;
+    width: 100%;
 }
 
 .formGroup {
