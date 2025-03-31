@@ -6,6 +6,7 @@ import {Provider} from "components/ui/provider";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import "./styles/global.css";
 import {GoogleOAuthProvider} from "@react-oauth/google";
+import {BodyScrollController} from "components/BodyScrollController";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     v7_relativeSplatPath: true,
                 }}>
                     <Provider>
+                        <BodyScrollController/>
                         <App/>
                     </Provider>
                 </BrowserRouter>
