@@ -1,9 +1,16 @@
 import {useState, FormEvent} from "react";
-import {chakra, Stack, Button, Center, Input, Text, Box} from "@chakra-ui/react";
-import {useNavigate} from "react-router-dom";
+import {
+    Box,
+    Button,
+    chakra,
+    Input,
+    Stack,
+    Text,
+} from "@chakra-ui/react";
 import styles from "./RegisterPage.module.css";
 import {useRegister} from "hooks/api/useRegister";
 import {Eye, EyeOff} from "lucide-react";
+import {Link} from "react-router-dom";
 
 export const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");
@@ -12,8 +19,8 @@ export const RegisterPage = () => {
     const [error, setError] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const navigate = useNavigate();
     const {registerUser} = useRegister();
 
     const handleRegister = (e: FormEvent<HTMLFormElement>) => {
@@ -23,70 +30,83 @@ export const RegisterPage = () => {
             return;
         }
         setError("");
-        registerUser.mutate({username, password});
+        setLoading(true);
+        registerUser.mutate({username, password}, {
+            onSettled: () => setLoading(false),
+        });
     };
 
     return (
         <Box className="auth-page">
-            <Center paddingTop={20}>
-                <chakra.form className={styles.form} onSubmit={handleRegister}>
-                    <Stack gap="4">
-                        <Text fontSize="sm" textAlign="center" color="#ee8b05">
-                            Пожалуйста, введите свои данные для регистрации
+            <chakra.form className={styles.form} onSubmit={handleRegister}>
+                <Stack gap="4">
+                    <Text fontSize="sm" textAlign="center" color="#ee8b05">
+                        Пожалуйста, введите свои данные для регистрации
+                    </Text>
+
+                    {error && (
+                        <Text className={styles.error}>
+                            {error}
                         </Text>
-                        {error && <Text className={styles.error}>{error}</Text>}
+                    )}
 
+                    <Input
+                        name="username"
+                        placeholder="Логин"
+                        value={username}
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+
+                    <Box className={styles.passwordWrapper}>
                         <Input
-                            name="username"
-                            placeholder="Логин"
-                            value={username}
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Пароль"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className={styles.passwordInput}
                             required
-                            onChange={(e) => setUsername(e.target.value)}
                         />
+                        <button
+                            type="button"
+                            className={styles.passwordToggle}
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+                        </button>
+                    </Box>
 
-                        <div className={styles.passwordWrapper}>
-                            <Input
-                                name="password"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Пароль"
-                                required
-                                value={password}
-                                className={styles.passwordInput}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className={styles.passwordToggle}
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-                            </button>
-                        </div>
+                    <Box className={styles.passwordWrapper}>
+                        <Input
+                            name="confirmPassword"
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Подтвердите пароль"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className={styles.passwordInput}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className={styles.passwordToggle}
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                            {showConfirmPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+                        </button>
+                    </Box>
 
-                        <div className={styles.passwordWrapper}>
-                            <Input
-                                name="confirmPassword"
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder="Подтвердите пароль"
-                                required
-                                value={confirmPassword}
-                                className={styles.passwordInput}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className={styles.passwordToggle}
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                                {showConfirmPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-                            </button>
-                        </div>
+                    <Button type="submit" disabled={loading}>
+                        {loading ? "Регистрация..." : "Зарегистрироваться"}
+                    </Button>
 
-                        <Button type="submit">Зарегистрироваться</Button>
-                        <Button onClick={() => navigate("/login")}>Войти</Button>
-                    </Stack>
-                </chakra.form>
-            </Center>
+                    <Box textAlign="center">
+                        <Link to="/login" className={styles.registerLink}>
+                            У вас уже есть аккаунт?
+                        </Link>
+                    </Box>
+                </Stack>
+            </chakra.form>
         </Box>
     );
 };

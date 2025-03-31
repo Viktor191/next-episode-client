@@ -60,14 +60,15 @@ export const LoginPage = () => {
                             </button>
                         </Box>
 
-                        <Link to="/register" color="blue.500">
-                            Зарегистрируйтесь
-                        </Link>
-
                         <Button type="submit" disabled={loading}>
                             {loading ? "Вход..." : "Войти"}
                         </Button>
                         <GoogleLoginButton/>
+                        <Box textAlign="center">
+                            <Link to="/register" className={styles.registerLink}>
+                                Зарегистрируйтесь
+                            </Link>
+                        </Box>
                     </Stack>
                 </chakra.form>
             </Center>

@@ -3,7 +3,7 @@ import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
 import {useShows} from "hooks/api/useShows";
-import {ToggleFilter} from "components/ToggleFilter/ToggleFilter";
+import {ToggleFilter} from "components/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
 import {useUser} from "hooks/api/useUser";
