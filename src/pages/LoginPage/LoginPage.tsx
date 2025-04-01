@@ -63,7 +63,9 @@ export const LoginPage = () => {
                         <Button type="submit" disabled={loading}>
                             {loading ? "Вход..." : "Войти"}
                         </Button>
-                        <GoogleLoginButton/>
+                        <Box textAlign="center">
+                            <GoogleLoginButton/>
+                        </Box>
                         <Box textAlign="center">
                             <Link to="/register" className={styles.registerLink}>
                                 Зарегистрируйтесь

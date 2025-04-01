@@ -74,4 +74,26 @@ button[aria-disabled="true"] {
     opacity: 1 !important;
 }
 
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    background-color: #ee8b05;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scroll-to-top:hover {
+    background-color: #ff9c1a;
+    transform: translateY(-2px);
+}
 

@@ -20,9 +20,9 @@ export const AddByImdbPage = () => {
 
     useEffect(() => {
         setIsButtonDisabled(false);
-    }, [imdbUrl]); // Сброс блокировки кнопки при изменении imdbUrl, перед этим делал это в useMemo
+    }, [imdbUrl]);
 
-    // Извлекаем imdbID при изменении imdbUrl
+
     const imdbID = useMemo(() => {
         const match = imdbUrl.match(/tt\d+/);
         return match ? match[0] : null;
@@ -46,18 +46,20 @@ export const AddByImdbPage = () => {
         <Box className="page-container">
             <Heading as="h2" className={styles.heading}>
                 <a href="https://www.imdb.com" target="_blank" rel="noopener noreferrer">
-                    Добавить фильм или сериал по IMDb ID
+                    Добавить фильм или сериал по ссылке на IMDb
                 </a>
             </Heading>
 
             <Box className={styles.searchContainer}>
-                <Input
-                    ref={inputRef}
-                    placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
-                    value={imdbUrl}
-                    onChange={(e) => setImdbUrl(e.target.value)}
-                    className={styles.input}
-                />
+                <Box w="100%">
+                    <Input
+                        ref={inputRef}
+                        placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
+                        value={imdbUrl}
+                        onChange={(e) => setImdbUrl(e.target.value)}
+                        className={styles.input}
+                    />
+                </Box>
 
                 <Button colorScheme="red" onClick={handleClear}>
                     Очистить

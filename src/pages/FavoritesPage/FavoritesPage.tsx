@@ -3,6 +3,7 @@ import {MovieCard} from "components/MovieCard";
 import styles from "./FavoritesPage.module.css";
 import {useUser} from "hooks/api/useUser";
 import {useEffect} from "react";
+import {ScrollToTopButton} from "components/ScrollToTopButton";
 
 export const FavoritesPage = () => {
     const {getMyFavorites, removeMyFavorite} = useUser();
@@ -15,7 +16,6 @@ export const FavoritesPage = () => {
 
     return (
         <>
-            {/*<NavigationBar/>*/}
             <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>Избранное</Heading>
                 <Box className={styles.searchContainer}>
@@ -53,6 +53,7 @@ export const FavoritesPage = () => {
                     </SimpleGrid>
                 )}
             </Box>
+            <ScrollToTopButton/>
         </>
     );
 };
