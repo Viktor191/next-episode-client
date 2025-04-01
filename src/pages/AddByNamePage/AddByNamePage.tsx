@@ -4,6 +4,7 @@ import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
 import {useUser} from "hooks/api/useUser";
 import {useSearch} from "hooks/api/useSearch";
+import {ScrollToTopButton} from "components/ScrollToTopButton";
 
 export const AddByNamePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>(""); // Ввод пользователя
@@ -89,6 +90,7 @@ export const AddByNamePage = () => {
                     </SimpleGrid>
                 )}
             </Box>
+            <ScrollToTopButton/>
         </>
     );
 };

@@ -1,6 +1,6 @@
 .navigationBar {
     background-color: #05202e;
-    padding: 16px 16px;
+    padding: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     border-bottom: #ee8b05 1px solid;
@@ -10,8 +10,9 @@
     display: flex;
     gap: 24px;
     flex-wrap: wrap;
-    justify-content: center; /* Центрируем ссылки */
-    flex-grow: 1; /* Позволяет равномерно распределять пространство */
+    justify-content: center;
+    flex-grow: 1;
+    align-items: center;
 }
 
 .link {
@@ -44,4 +45,39 @@
 
 .logoutLink:hover {
     color: red;
+}
+
+/* 🔽 Адаптивные стили */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #ee8b05;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.menuIcon {
+    display: none;
+    cursor: pointer;
+    color: #ee8b05;
+}
+
+@media (max-width: 768px) {
+    .menuIcon {
+        display: block;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    .logoutLink {
+        justify-content: center;
+    }
 }

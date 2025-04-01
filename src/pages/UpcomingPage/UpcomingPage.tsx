@@ -7,6 +7,7 @@ import {ToggleFilter} from "components/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
 import {useUser} from "hooks/api/useUser";
+import {ScrollToTopButton} from "components/ScrollToTopButton";
 
 
 export const UpcomingPage = () => {
@@ -77,6 +78,7 @@ export const UpcomingPage = () => {
                     </SimpleGrid>
                 )}
             </Box>
+            <ScrollToTopButton/>
         </>
     );
 };
