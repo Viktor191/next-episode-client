@@ -1,10 +1,11 @@
 import {useState, useRef, useEffect} from "react";
-import {Box, Button, Heading, Input, Text, SimpleGrid} from "@chakra-ui/react";
+import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByName.module.css";
 import {useUser} from "hooks/api/useUser";
 import {useSearch} from "hooks/api/useSearch";
 import {ScrollToTopButton} from "components/ScrollToTopButton";
+import {ClearableInputWithIcon} from "components/ClearableInputWithIcon";
 
 export const AddByNamePage = () => {
     const [searchQuery, setSearchQuery] = useState<string>(""); // Ввод пользователя
@@ -49,25 +50,16 @@ export const AddByNamePage = () => {
             <Box className="page-container">
                 <Heading as="h2" className={styles.heading}>Поиск фильма или сериала по названию</Heading>
 
-                <Box className={styles.searchContainer}>
-                    <Input
-                        ref={inputRef}
-                        placeholder="Введите название фильма или сериала"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className={styles.input}
-                    />
-
-                    <Button colorScheme="blue" onClick={handleSearch}>
-                        🔍 Найти
-                    </Button>
-
-                    <Button colorScheme="red" onClick={handleClear}>
-                        Очистить
-                    </Button>
-                </Box>
-
+                <ClearableInputWithIcon
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onClear={handleClear}
+                    placeholder="Вставьте ссылку на фильм с IMDb"
+                    showSearchIcon
+                    onSearchClick={handleSearch}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                />
                 {isFetching && <Text>Загрузка...</Text>}
 
                 {results.length > 0 && (

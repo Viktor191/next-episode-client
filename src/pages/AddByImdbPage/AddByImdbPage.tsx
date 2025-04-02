@@ -1,9 +1,10 @@
 import {useEffect, useRef, useState, useMemo} from "react";
-import {Box, Button, Heading, Input} from "@chakra-ui/react";
+import {Box, Button, Heading} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./AddByImdbPage.module.css";
 import {useUser} from "hooks/api/useUser";
 import {useSearch} from "hooks/api/useSearch";
+import {ClearableInputWithIcon} from "components/ClearableInputWithIcon";
 
 export const AddByImdbPage = () => {
     const [imdbUrl, setImdbUrl] = useState<string>("");
@@ -15,7 +16,7 @@ export const AddByImdbPage = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        inputRef.current?.focus();
+        inputRef.current?.focus();// Устанавливаем фокус на поле ввода при загрузке компонента
     }, []);
 
     useEffect(() => {
@@ -29,7 +30,8 @@ export const AddByImdbPage = () => {
     }, [imdbUrl]);
 
     const {searchByImdbID} = useSearch();
-    const {data: movieData} = searchByImdbID(imdbID);
+    /*const {data: movieData} = searchByImdbID(imdbID);*/
+    const {data: movieData, refetch} = searchByImdbID(imdbID);
 
     const handleAddToFavorites = async () => {
         if (!movieData) return;
@@ -50,22 +52,15 @@ export const AddByImdbPage = () => {
                 </a>
             </Heading>
 
-            <Box className={styles.searchContainer}>
-                <Box w="100%">
-                    <Input
-                        ref={inputRef}
-                        placeholder="Вставьте ссылку IMDb (например, https://www.imdb.com/title/tt0804484/)"
-                        value={imdbUrl}
-                        onChange={(e) => setImdbUrl(e.target.value)}
-                        className={styles.input}
-                    />
-                </Box>
-
-                <Button colorScheme="red" onClick={handleClear}>
-                    Очистить
-                </Button>
-            </Box>
-
+            <ClearableInputWithIcon
+                value={imdbUrl}
+                onChange={(e) => setImdbUrl(e.target.value)}
+                onClear={handleClear}
+                placeholder="Вставьте ссылку на фильм с IMDb"
+                showSearchIcon
+                onSearchClick={refetch}
+                autoFocus
+            />
             {movieData && (
                 <MovieCard
                     movie={movieData}
