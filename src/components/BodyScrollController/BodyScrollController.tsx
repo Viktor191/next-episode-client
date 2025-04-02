@@ -4,9 +4,7 @@ import {useLocation} from "react-router-dom";
 export const BodyScrollController = (): null => {
     const location = useLocation();
     const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
-    /*const authPaths = ["/login", "/register"];
-    const isAuthPage = authPaths.includes(location.pathname);*/
-
+   
     useEffect(() => {
         if (isAuthPage) {
             document.body.classList.add("no-scroll");

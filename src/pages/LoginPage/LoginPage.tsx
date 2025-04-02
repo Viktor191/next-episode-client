@@ -39,6 +39,7 @@ export const LoginPage = () => {
                             value={username}
                             required
                             onChange={(e) => setUsername(e.target.value)}
+                            className={styles.input}
                         />
 
                         <Box className={styles.passwordWrapper}>
@@ -49,7 +50,7 @@ export const LoginPage = () => {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className={styles.passwordInput}
+                                className={styles.input}
                             />
                             <button
                                 type="button"

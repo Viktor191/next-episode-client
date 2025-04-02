@@ -80,4 +80,29 @@
     .logoutLink {
         justify-content: center;
     }
+
+    .mobileOverlay {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        background-color: #05202e;
+        z-index: 1000;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .mobileOverlayHidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+    }
+
+    .mobileOverlayVisible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

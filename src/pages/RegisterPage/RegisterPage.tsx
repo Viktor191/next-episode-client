@@ -56,6 +56,7 @@ export const RegisterPage = () => {
                         value={username}
                         required
                         onChange={(e) => setUsername(e.target.value)}
+                        className={styles.input}
                     />
 
                     <Box className={styles.passwordWrapper}>
@@ -65,7 +66,7 @@ export const RegisterPage = () => {
                             placeholder="Пароль"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className={styles.passwordInput}
+                            className={styles.input}
                             required
                         />
                         <button
@@ -84,7 +85,7 @@ export const RegisterPage = () => {
                             placeholder="Подтвердите пароль"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className={styles.passwordInput}
+                            className={styles.input}
                             required
                         />
                         <button

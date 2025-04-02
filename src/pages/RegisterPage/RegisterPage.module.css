@@ -16,9 +16,17 @@
     align-items: center;
 }
 
-.passwordInput {
+.input {
     width: 100%;
     padding-right: 2.5rem;
+    font-size: 1rem;
+    border: 1px solid #ee8b05;
+    border-radius: 4px;
+}
+
+.input:focus {
+    border-color: #ffad05;
+    outline: none;
 }
 
 .passwordToggle {

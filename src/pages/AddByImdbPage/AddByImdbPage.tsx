@@ -48,7 +48,7 @@ export const AddByImdbPage = () => {
         <Box className="page-container">
             <Heading as="h2" className={styles.heading}>
                 <a href="https://www.imdb.com" target="_blank" rel="noopener noreferrer">
-                    Добавить фильм или сериал по ссылке на IMDb
+                    Добавить фильм или сериал по ссылке c IMDb www.imdb.com
                 </a>
             </Heading>
 

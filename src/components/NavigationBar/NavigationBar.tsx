@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Box, Flex} from "@chakra-ui/react";
-import {LogOut, Menu} from "lucide-react";
+import {LogOut, Menu, X} from "lucide-react";
 import {useNavigate, NavLink} from "react-router-dom";
 import styles from "./NavigationBar.module.css";
 
@@ -37,15 +37,14 @@ export const NavigationBar = () => {
         <Box className={styles.navigationBar}>
             <Flex justifyContent="space-between" alignItems="center" className={styles.header}>
                 <Box className={styles.menuIcon} onClick={toggleMenu}>
-                    <Menu size={24}/>
+                    {isMenuOpen ? <X size={24}/> : <Menu size={24}/>}
                 </Box>
             </Flex>
 
             <Flex
-                direction={{base: "column", md: "row"}}
-                display={{base: isMenuOpen ? "flex" : "none", md: "flex"}}
-                width="100%"
-                className={styles.navLinks}
+                className={`${styles.navLinks} ${
+                    isMenuOpen ? styles.mobileOverlayVisible : styles.mobileOverlayHidden
+                } ${styles.mobileOverlay}`}
             >
                 <MobileNavLink to="/favorites">Избранное</MobileNavLink>
                 <MobileNavLink to="/imdbSearch">Поиск по IMDb ID</MobileNavLink>
