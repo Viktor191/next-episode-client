@@ -18,8 +18,8 @@
 
 .input {
     width: 100%;
-    padding-right: 2.5rem;
-    font-size: 1rem;
+    padding: 0.5rem;
+    font-size: 15px;
     border: 1px solid #ee8b05;
     border-radius: 4px;
 }

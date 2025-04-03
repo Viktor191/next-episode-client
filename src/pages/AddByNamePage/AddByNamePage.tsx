@@ -54,14 +54,18 @@ export const AddByNamePage = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onClear={handleClear}
-                    placeholder="Вставьте ссылку на фильм с IMDb"
+                    placeholder="Введите название фильма или сериала"
                     showSearchIcon
                     onSearchClick={handleSearch}
                     onKeyDown={handleKeyDown}
                     autoFocus
                 />
                 {isFetching && <Text>Загрузка...</Text>}
-
+                {!isFetching && searchTerm && results.length === 0 && (
+                    <Text textAlign="center" mt={4}>
+                        Ничего не найдено
+                    </Text>
+                )}
                 {results.length > 0 && (
                     <SimpleGrid columns={{base: 1, md: 2, lg: 1}} gap={6} className={styles.grid}>
                         {results.map((movie) => (
