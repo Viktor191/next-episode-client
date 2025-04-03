@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
@@ -8,18 +8,18 @@ import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
 import {useUser} from "hooks/api/useUser";
 import {ScrollToTopButton} from "components/ScrollToTopButton";
+import {apiClient} from "helpers/apiClient.ts";
 
 
 export const UpcomingPage = () => {
-    const {getUpcomingMovies, addToFavoritesUpcoming} = useShows();
-    const {data: upcomingMovies = [], isFetching, refetch} = getUpcomingMovies();
+    const {addToFavoritesUpcoming} = useShows();
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
     const {getMyFavorites} = useUser();
     const {data: favoriteMovies = []} = getMyFavorites();
 
     const [filterByCurrentYear, setFilterByCurrentYear] = useState(true);
-    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set()); // Множество добавленных фильмов для блокировки кнопки
+    const [addedMovies, setAddedMovies] = useState<Set<number>>(new Set());
 
     const handleToggle = () => {
         setFilterByCurrentYear((prev) => !prev);
@@ -30,12 +30,40 @@ export const UpcomingPage = () => {
         setAddedMovies((prev) => new Set(prev).add(movieId));
     };
 
-    const filteredMoviesFav = upcomingMovies.filter(
+    const [movies, setMovies] = useState<Movie[]>([]);
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            setIsLoading(true);
+            try {
+                const {data} = await apiClient.get("/shows/upcoming", {
+                    params: {page},
+                });
+                if (data.length === 0) {
+                    setHasMore(false);
+                } else {
+                    setMovies((prev) => {
+                        const existingIds = new Set(prev.map(movie => movie.id));
+                        const newMovies = data.filter((movie: Movie) => !existingIds.has(movie.id));
+                        return [...prev, ...newMovies];
+                    });
+                }
+            } catch (err) {
+                console.error("Ошибка при загрузке фильмов:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMovies();
+    }, [page]);
+
+    const filteredMovies = filterMoviesByYear(movies.filter(
         (movie) => !favoriteMovies.some((fav) => fav.id === movie.id)
-    );
-
-    const filteredMovies: Movie[] = filterMoviesByYear(filteredMoviesFav, filterByCurrentYear);
-
+    ), filterByCurrentYear);
 
     return (
         <>
@@ -45,18 +73,18 @@ export const UpcomingPage = () => {
                 </Heading>
 
                 <Box className={styles.searchContainer}>
-                    <Button colorScheme="blue" onClick={() => refetch()}>
+                    {/*<Button colorScheme="blue" onClick={() => setPage(1)}>
                         Обновить список
-                    </Button>
+                    </Button>*/}
                     <ToggleFilter isChecked={filterByCurrentYear} onToggle={handleToggle}/>
                 </Box>
 
-                {isFetching && <Text>Загрузка...</Text>}
-                {!isFetching && filteredMovies.length === 0 && (
+                {isLoading && <Text>Загрузка...</Text>}
+                {!isLoading && filteredMovies.length === 0 && (
                     <Text className={styles.emptyMessage}>Нет фильмов, вышедших в этом году</Text>
                 )}
 
-                {!isFetching && filteredMovies.length > 0 && (
+                {!isLoading && filteredMovies.length > 0 && (
                     <SimpleGrid columns={{base: 1, md: 1, lg: 1}} gap={6} className={styles.grid}>
                         {filteredMovies.map((movie) => (
                             <MovieCard
@@ -64,7 +92,6 @@ export const UpcomingPage = () => {
                                 movie={movie}
                                 actionButton={
                                     <Button
-                                        /*colorScheme={addedMovies.has(movie.id) ? "gray" : "green"}*/
                                         onClick={() => handleAddToFavorites(movie.id)}
                                         disabled={addedMovies.has(movie.id)}
                                     >
@@ -74,6 +101,11 @@ export const UpcomingPage = () => {
                             />
                         ))}
                     </SimpleGrid>
+                )}
+                {hasMore && !isLoading && (
+                    <Box textAlign="center" mt={4}>
+                        <Button onClick={() => setPage((prev) => prev + 1)}>Показать ещё</Button>
+                    </Box>
                 )}
             </Box>
             <ScrollToTopButton/>
