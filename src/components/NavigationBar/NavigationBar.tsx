@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Box, Flex} from "@chakra-ui/react";
 import {LogOut, Menu, X} from "lucide-react";
 import {useNavigate, NavLink} from "react-router-dom";
@@ -34,6 +34,26 @@ export const NavigationBar = () => {
             {children}
         </NavLink>
     );
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+            if (
+                isMenuOpen &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("touchstart", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("touchstart", handleClickOutside);
+        };
+    }, [isMenuOpen]);
 
     return (
         <Box className={styles.navigationBar}>
@@ -44,10 +64,12 @@ export const NavigationBar = () => {
             </Flex>
 
             <Flex
+                ref={menuRef}
                 className={`${styles.navLinks} ${
                     isMenuOpen ? styles.mobileOverlayVisible : styles.mobileOverlayHidden
                 } ${styles.mobileOverlay}`}
             >
+
                 <div className={styles.menuItem}>
                     <MobileNavLink to="/favorites">Избранное</MobileNavLink>
                 </div>
