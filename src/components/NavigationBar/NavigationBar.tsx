@@ -27,7 +27,9 @@ export const NavigationBar = () => {
         <NavLink
             to={to}
             onClick={() => setIsMenuOpen(false)}
-            className={({isActive}) => (isActive ? styles.activeLink : styles.link)}
+            className={({isActive}) =>
+                isActive ? styles.activeLink : styles.link
+            }
         >
             {children}
         </NavLink>
@@ -46,14 +48,24 @@ export const NavigationBar = () => {
                     isMenuOpen ? styles.mobileOverlayVisible : styles.mobileOverlayHidden
                 } ${styles.mobileOverlay}`}
             >
-                <MobileNavLink to="/favorites">Избранное</MobileNavLink>
-                <MobileNavLink to="/imdbSearch">Поиск по IMDb ID</MobileNavLink>
-                <MobileNavLink to="/search">Поиск по названию</MobileNavLink>
-                <MobileNavLink to="/upcoming">Скоро на экранах</MobileNavLink>
-                <Flex className={styles.logoutLink} onClick={handleLogout}>
-                    <LogOut size={20}/>
-                    <span>Выйти</span>
-                </Flex>
+                <div className={styles.menuItem}>
+                    <MobileNavLink to="/favorites">Избранное</MobileNavLink>
+                </div>
+                <div className={styles.menuItem}>
+                    <MobileNavLink to="/imdbSearch">Поиск по IMDb ID</MobileNavLink>
+                </div>
+                <div className={styles.menuItem}>
+                    <MobileNavLink to="/search">Поиск по названию</MobileNavLink>
+                </div>
+                <div className={styles.menuItem}>
+                    <MobileNavLink to="/upcoming">Скоро на экранах</MobileNavLink>
+                </div>
+                <div className={styles.menuItem}>
+                    <Flex className={styles.logoutLink} onClick={handleLogout}>
+                        <LogOut size={20}/>
+                        <span>Выйти</span>
+                    </Flex>
+                </div>
             </Flex>
         </Box>
     );
