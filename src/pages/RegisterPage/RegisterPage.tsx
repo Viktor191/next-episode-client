@@ -9,16 +9,14 @@ import {
 } from "@chakra-ui/react";
 import styles from "./RegisterPage.module.css";
 import {useRegister} from "hooks/api/useRegister";
-import {Eye, EyeOff} from "lucide-react";
 import {Link} from "react-router-dom";
+import {PasswordInput} from "components/PasswordInput";
 
 export const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
-    const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     const {registerUser} = useRegister();
@@ -59,43 +57,21 @@ export const RegisterPage = () => {
                         className={styles.input}
                     />
 
-                    <Box className={styles.passwordWrapper}>
-                        <Input
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Пароль"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className={styles.input}
-                            required
-                        />
-                        <button
-                            type="button"
-                            className={styles.passwordToggle}
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-                        </button>
-                    </Box>
+                    <PasswordInput
+                        name="password"
+                        placeholder="Пароль"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
 
-                    <Box className={styles.passwordWrapper}>
-                        <Input
-                            name="confirmPassword"
-                            type={showConfirmPassword ? "text" : "password"}
-                            placeholder="Подтвердите пароль"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className={styles.input}
-                            required
-                        />
-                        <button
-                            type="button"
-                            className={styles.passwordToggle}
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                            {showConfirmPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-                        </button>
-                    </Box>
+                    <PasswordInput
+                        name="confirmPassword"
+                        placeholder="Подтвердите пароль"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
 
                     <Button type="submit" disabled={loading}>
                         {loading ? "Регистрация..." : "Зарегистрироваться"}
