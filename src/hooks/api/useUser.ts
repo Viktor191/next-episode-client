@@ -6,6 +6,7 @@ import {toaster} from "components/ui/toaster";
 export const useUser = () => {
     const queryClient = useQueryClient();
 
+
     const getMyFavorites = () => {
         return useQuery<UserFavoriteResponse[]>({
             queryKey: ["myFavorites"],
@@ -40,9 +41,9 @@ export const useUser = () => {
         },
         onSuccess: (newMovie) => {
             if (!newMovie || !newMovie.id) {
-                console.warn("⚠️ Внимание! `newMovie` не содержит `id`:", newMovie);
+                console.warn("Внимание! `newMovie` не содержит `id`:", newMovie);
             }
-            console.log("✅ Успех! Фильм добавлен:");
+            console.log("Успех! Фильм добавлен:");
 
             queryClient.setQueryData(["myFavorites"], (oldFavorites: UserFavoriteResponse[] = []) => {
                 if (oldFavorites.some((movie) => movie.id === newMovie.id)) {
@@ -59,5 +60,27 @@ export const useUser = () => {
         },
     });
 
-    return {getMyFavorites, addToFavorites, removeMyFavorite};
+    const getMe = () => {
+        return useQuery({
+            queryKey: ["me"],
+            queryFn: async () => {
+                const {data} = await apiClient.get("/users/me");
+                return data;
+            },
+            refetchOnMount: true,
+            staleTime: 0,
+        });
+    };
+
+    const updateUserProfile = useMutation({
+        mutationFn: async (updateData: { email?: string; telegram?: string }) => {
+            const {data} = await apiClient.patch("/users/me", updateData);
+            return data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["me"]}); // 🔄 автоматически обновим кэш getMe
+        },
+    });
+
+    return {getMyFavorites, addToFavorites, removeMyFavorite, getMe, updateUserProfile};
 };

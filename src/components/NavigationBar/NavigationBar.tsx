@@ -69,7 +69,9 @@ export const NavigationBar = () => {
                     isMenuOpen ? styles.mobileOverlayVisible : styles.mobileOverlayHidden
                 } ${styles.mobileOverlay}`}
             >
-
+                <div className={styles.menuItem}>
+                    <MobileNavLink to="/upcoming">Скоро на экранах</MobileNavLink>
+                </div>
                 <div className={styles.menuItem}>
                     <MobileNavLink to="/favorites">Избранное</MobileNavLink>
                 </div>
@@ -80,7 +82,7 @@ export const NavigationBar = () => {
                     <MobileNavLink to="/search">Поиск по названию</MobileNavLink>
                 </div>
                 <div className={styles.menuItem}>
-                    <MobileNavLink to="/upcoming">Скоро на экранах</MobileNavLink>
+                    <MobileNavLink to="/profile">Профиль</MobileNavLink>
                 </div>
                 <div className={styles.menuItem}>
                     <Flex className={styles.logoutLink} onClick={handleLogout}>

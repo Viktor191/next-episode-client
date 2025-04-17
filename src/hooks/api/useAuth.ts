@@ -1,9 +1,10 @@
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
 import {apiClient} from "helpers/apiClient";
 
 export const useAuth = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const loginUser = useMutation({
         mutationFn: async (data: { username: string; password: string }) => {
@@ -12,7 +13,8 @@ export const useAuth = () => {
         },
         onSuccess: (response) => {
             localStorage.setItem("authToken", response.token);
-            navigate("/favorites");
+            queryClient.invalidateQueries({queryKey: ["me"]});
+            navigate("/upcoming");
         },
     });
 

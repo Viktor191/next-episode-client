@@ -28,5 +28,10 @@ export const routes = [
         path: "/upcoming",
         component: "UpcomingPage",
         isProtected: true,
+    },
+    {
+        path: "/profile",
+        component: "ProfilePage",
+        isProtected: true,
     }
 ];

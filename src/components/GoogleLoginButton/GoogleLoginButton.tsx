@@ -12,8 +12,8 @@ export const GoogleLoginButton = () => {
             return response.data;
         },
         onSuccess: (data) => {
-            localStorage.setItem('authToken', data.token);
-            navigate('/favorites');
+            localStorage.setItem("authToken", data.token);
+            navigate("/upcoming");
         },
         onError: (err) => {
             console.error('❌ Ошибка входа через Google', err);
@@ -22,10 +22,10 @@ export const GoogleLoginButton = () => {
 
     return (
         <GoogleLogin
-            text="signin_with"       // Явно задаем текст кнопки
+            text="continue_with"       // Явно задаем текст кнопки
             shape="rectangular"             // Форма кнопки
-            size="large"             // Размер кнопки
-            theme="outline"          // Тема кнопки
+            size="medium"             // Размер кнопки
+            theme="filled_black"          // Тема кнопки
             locale="ru"              // Локаль (русский язык)
             onSuccess={(credentialResponse) => {
                 const credential = credentialResponse.credential;
