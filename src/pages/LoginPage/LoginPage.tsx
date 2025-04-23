@@ -53,11 +53,16 @@ export const LoginPage = () => {
                             {loading ? "Вход..." : "Войти"}
                         </Button>
                         <Box textAlign="center">
+                            <Link to="/forgot-password" className={styles.registerLink}>
+                                Восстановить пароль
+                            </Link>
+                        </Box>
+                        <Box textAlign="center">
                             <GoogleLoginButton/>
                         </Box>
                         <Box textAlign="center">
                             <Link to="/register" className={styles.registerLink}>
-                                Зарегистрируйтесь
+                                Регистрация
                             </Link>
                         </Box>
                     </Stack>

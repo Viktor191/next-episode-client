@@ -10,6 +10,16 @@ export const routes = [
         isProtected: false,
     },
     {
+        path: "/forgot-password",
+        component: "ForgotPasswordPage",
+        isProtected: false,
+    },
+    {
+        path: "/reset-password/:token",
+        component: "ResetPasswordPage",
+        isProtected: false,
+    },
+    {
         path: "/favorites",
         component: "FavoritesPage",
         isProtected: true,
