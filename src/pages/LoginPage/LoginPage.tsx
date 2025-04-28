@@ -28,7 +28,7 @@ export const LoginPage = () => {
             <Center paddingTop={20}>
                 <chakra.form className={styles.form} onSubmit={handleLogin}>
                     <Stack gap="4">
-                        <Text fontSize="sm" textAlign="center">
+                        <Text textAlign="center">
                             Введите логин и пароль для входа
                         </Text>
 

@@ -1,6 +1,7 @@
 import {Box, Image, Text} from "@chakra-ui/react";
 import styles from "./MovieCard.module.css";
 import {Movie} from "hooks/types/Movie";
+import {formatDate} from "helpers/dateUtils";
 
 interface MovieCardProps {
     movie: Movie;
@@ -28,7 +29,7 @@ export const MovieCard = ({movie, actionButton}: MovieCardProps) => {
                     <strong>Оригинальное название:</strong> {movie.original_title || "Неизвестно"}
                 </Text>
                 <Text className={styles.label}>
-                    <strong>Дата выхода:</strong> {movie.release_date || "Неизвестно"}
+                    <strong>Дата выхода:</strong> {formatDate(movie.release_date, "Неизвестно")}
                 </Text>
                 <Text className={styles.label}>
                     <strong>Тип:</strong> {getMediaType(movie.media_type)}

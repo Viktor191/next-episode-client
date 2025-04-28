@@ -46,7 +46,7 @@ export const ProfilePage = () => {
             <Heading as="h2" className={styles.heading}>Профиль пользователя</Heading>
 
             <Stack gap={4} maxW="400px" mx="auto" mt={6}>
-                <Text className={styles.label} mb={1}>Email для уведомлений</Text>
+                <Text className={styles.label} mb={1}>Email для уведомлений<br/>и восстановления пароля</Text>
                 <Input
                     ref={emailRef}
                     placeholder="Введите ваш email"
@@ -76,9 +76,11 @@ export const ProfilePage = () => {
                     mb={1}
                 />
                 {!telegram && (
-                    <Text fontSize="sm" color="gray.400" mb={4}>
-                        Telegram не указан
-                    </Text>
+                    <Box textAlign="center">
+                        <Text fontSize="sm" color="gray.400" mb={4}>
+                            Telegram не указан
+                        </Text>
+                    </Box>
                 )}
 
                 <Button

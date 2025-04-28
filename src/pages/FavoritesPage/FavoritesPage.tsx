@@ -23,7 +23,6 @@ export const FavoritesPage = () => {
                         Обновить список
                     </Button>
                 </Box>
-                {/*{isFetching && <Text>Загрузка...</Text>}*/}
                 {!isFetching && favorites.length === 0 && (
                     <Text className={styles.emptyMessage}>Нет избранных фильмов или сериалов</Text>
                 )}
@@ -45,7 +44,7 @@ export const FavoritesPage = () => {
                                             })}
                                             aria-label={`Удалить ${movie.title} из избранного`}
                                         >
-                                            X
+                                            ✖
                                         </Button>
                                     }
                                 />
