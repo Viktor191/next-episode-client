@@ -2,7 +2,6 @@ import {useEffect, useState, useRef} from "react";
 import {
     Box,
     Button,
-    Heading,
     Input,
     Stack,
     Text,
@@ -43,7 +42,6 @@ export const ProfilePage = () => {
 
     return (
         <Box className="page-container">
-            <Heading as="h2" className={styles.heading}>Профиль пользователя</Heading>
 
             <Stack gap={4} maxW="400px" mx="auto" mt={6}>
                 <Text className={styles.label} mb={1}>Email для уведомлений<br/>и восстановления пароля</Text>
