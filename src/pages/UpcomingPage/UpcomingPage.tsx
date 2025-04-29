@@ -3,7 +3,7 @@ import {Box, Button, Heading, Text, SimpleGrid} from "@chakra-ui/react";
 import {MovieCard} from "components/MovieCard";
 import styles from "./UpcomingPage.module.css";
 import {useShows} from "hooks/api/useShows";
-import {ToggleFilter} from "components/ToggleFilter";
+import {Toggle} from "components/ToggleFilter";
 import {filterMoviesByYear} from "helpers/filterMovies";
 import {Movie} from "hooks/types/Movie";
 import {useUser} from "hooks/api/useUser";
@@ -12,6 +12,7 @@ import {apiClient} from "helpers/apiClient.ts";
 
 
 export const UpcomingPage = () => {
+    const currentYear = new Date().getFullYear();
     const {addToFavoritesUpcoming} = useShows();
     const {mutateAsync: addToFavoritesAction} = addToFavoritesUpcoming;
 
@@ -78,10 +79,11 @@ export const UpcomingPage = () => {
                 </Heading>
 
                 <Box className={styles.searchContainer}>
-                    {/*<Button colorScheme="blue" onClick={() => setPage(1)}>
-                        Обновить список
-                    </Button>*/}
-                    <ToggleFilter isChecked={filterByCurrentYear} onToggle={handleToggle}/>
+                    <Toggle
+                        isChecked={filterByCurrentYear}
+                        onToggle={handleToggle}
+                        label={<Text>Только релизы {currentYear} года</Text>}
+                    />
                 </Box>
 
                 {isLoading && <Text>Загрузка...</Text>}

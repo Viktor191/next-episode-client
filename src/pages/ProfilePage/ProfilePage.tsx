@@ -9,6 +9,7 @@ import {
 import {useUser} from "hooks/api/useUser";
 import {toaster} from "components/ui/toaster";
 import styles from "./ProfilePage.module.css";
+import {Toggle} from "components/ToggleFilter";
 
 export const ProfilePage = () => {
     const {getMe, updateUserProfile} = useUser();
@@ -20,6 +21,7 @@ export const ProfilePage = () => {
     const [email, setEmail] = useState("");
     const [telegram, setTelegram] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    const [notify, setNotify] = useState(true);
 
     const isProfileFilled = !!user?.email || !!user?.telegram;
 
@@ -27,17 +29,32 @@ export const ProfilePage = () => {
         if (user) {
             setEmail(user.email || "");
             setTelegram(user.telegram || "");
+            setNotify(user.notify ?? true);
         }
     }, [user]);
 
     const handleSave = async () => {
-        await updateUser({email, telegram}); // ошибка будет показана автоматически
+        await updateUser({email, telegram, notify}); // ошибка будет показана автоматически
         toaster.create({
             title: "✅ Профиль обновлён",
             type: "success",
             description: "Изменения успешно сохранены",
         });
         setIsEditing(false);
+    };
+
+    const handleNotifyToggle = async () => {
+        const newNotify = !notify;
+
+        await updateUser({email, telegram, notify: newNotify});
+
+        setNotify(newNotify);
+
+        toaster.create({
+            title: "✅ Настройки уведомлений обновлены",
+            type: "success",
+            description: newNotify ? "Уведомления включены" : "Уведомления отключены",
+        });
     };
 
     return (
@@ -80,7 +97,11 @@ export const ProfilePage = () => {
                         </Text>
                     </Box>
                 )}
-
+                <Toggle
+                    isChecked={notify}
+                    onToggle={handleNotifyToggle}
+                    label={<Text>Получать уведомления</Text>}
+                />
                 <Button
                     colorScheme="blue"
                     onClick={async () => {

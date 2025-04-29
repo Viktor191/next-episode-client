@@ -1,1 +1,1 @@
-export {ToggleFilter} from "./ToggleFilter";
+export {Toggle} from "./Toggle.tsx";

@@ -1,16 +1,16 @@
-import {Switch, Stack, Text} from "@chakra-ui/react"
+import {Switch, Flex, Text} from "@chakra-ui/react";
+import {ReactNode} from "react";
 
-interface ToggleFilterProps {
+interface ToggleProps {
     isChecked: boolean;
     onToggle: () => void;
+    label: ReactNode;
 }
 
-export const ToggleFilter = ({isChecked, onToggle}: ToggleFilterProps) => {
-    const currentYear = new Date().getFullYear();
-
+export const Toggle = ({isChecked, onToggle, label}: ToggleProps) => {
     return (
-        <Stack direction="row" align="center" gap="2">
-            <Text>Только релизы {currentYear} года</Text>
+        <Flex align="center" justify="center" gap={2}>
+            <Text>{label}</Text>
             <Switch.Root
                 checked={isChecked}
                 onCheckedChange={onToggle}
@@ -21,6 +21,6 @@ export const ToggleFilter = ({isChecked, onToggle}: ToggleFilterProps) => {
                 <Switch.Control/>
                 <Switch.Label/>
             </Switch.Root>
-        </Stack>
+        </Flex>
     );
 };

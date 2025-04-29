@@ -73,7 +73,7 @@ export const useUser = () => {
     };
 
     const updateUserProfile = useMutation({
-        mutationFn: async (updateData: { email?: string; telegram?: string }) => {
+        mutationFn: async (updateData: { email?: string; telegram?: string; notify?: boolean }) => {
             const {data} = await apiClient.patch("/users/me", updateData);
             return data;
         },
