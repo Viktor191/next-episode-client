@@ -1,1 +1,1 @@
-export {AddByImdbPage} from "./AddByImdbPage";
+export { AddByImdbPage } from './AddByImdbPage';

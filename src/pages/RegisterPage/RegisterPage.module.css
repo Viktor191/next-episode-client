@@ -1,51 +1,51 @@
 .form {
-    max-width: 230px;
-    width: 100%;
-    padding-top: 59px;
+  max-width: 230px;
+  width: 100%;
+  padding-top: 59px;
 }
 
 .error {
-    color: red;
-    text-align: center;
-    font-size: 14px;
+  color: red;
+  text-align: center;
+  font-size: 14px;
 }
 
 .passwordWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 15px;
-    border: 1px solid #ee8b05;
-    border-radius: 4px;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 15px;
+  border: 1px solid #ee8b05;
+  border-radius: 4px;
 }
 
 .input:focus {
-    border-color: #ffad05;
-    outline: none;
+  border-color: #ffad05;
+  outline: none;
 }
 
 .passwordToggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #555;
-    font-size: 18px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 18px;
 }
 
 .passwordToggle:hover {
-    color: #333;
+  color: #333;
 }
 
 .passwordToggle:hover {
-    animation: none;
-    color: red;
+  animation: none;
+  color: red;
 }

@@ -1,1 +1,1 @@
-export {UpcomingPage} from './UpcomingPage';
+export { UpcomingPage } from './UpcomingPage';

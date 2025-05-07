@@ -1,25 +1,25 @@
-import {Loader} from "@chakra-ui/react";
-import {ReactNode, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import { Loader } from '@chakra-ui/react';
+import { ReactNode, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
-    children?: ReactNode;
+  children?: ReactNode;
 };
 
-export const ProtectedRoute = ({children}: Props) => {
-    const navigate = useNavigate();
-    const token = localStorage.getItem("authToken");
+export const ProtectedRoute = ({ children }: Props) => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('authToken');
 
-    useEffect(() => {
-        if (!token) {
-            localStorage.removeItem("authToken");
-            navigate("/login");
-        }
-    }, [navigate, token]);
-
+  useEffect(() => {
     if (!token) {
-        return <Loader/>;
+      localStorage.removeItem('authToken');
+      navigate('/login');
     }
+  }, [navigate, token]);
 
-    return <>{children}</>;
+  if (!token) {
+    return <Loader />;
+  }
+
+  return <>{children}</>;
 };

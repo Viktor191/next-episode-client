@@ -1,1 +1,1 @@
-export {Toggle} from "./Toggle.tsx";
+export { Toggle } from './Toggle.tsx';

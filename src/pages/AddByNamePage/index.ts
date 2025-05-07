@@ -1,1 +1,1 @@
-export {AddByNamePage} from './AddByNamePage';
+export { AddByNamePage } from './AddByNamePage';

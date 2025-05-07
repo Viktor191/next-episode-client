@@ -1,53 +1,53 @@
 .inputWrapper {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
 }
 
 .input {
-    width: 100%;
-    padding: 6px 10px 6px 10px;
-    border-radius: 8px;
-    border: 1px solid #ee8b05;
-    font-size: 16px;
-    transition: border-color 0.2s ease;
-    background: transparent;
+  width: 100%;
+  padding: 6px 10px 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ee8b05;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+  background: transparent;
 }
 
 .input:focus {
-    border-color: #ee8b05;
-    outline: none;
-    box-shadow: 0 0 0 1px #ee8b05;
+  border-color: #ee8b05;
+  outline: none;
+  box-shadow: 0 0 0 1px #ee8b05;
 }
 
 .clearButton {
-    position: absolute;
-    right: 34px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    font-size: 25px;
-    color: #ee8b05;
-    cursor: pointer;
-    line-height: 1;
+  position: absolute;
+  right: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 25px;
+  color: #ee8b05;
+  cursor: pointer;
+  line-height: 1;
 }
 
 .clearButton:hover {
-    color: red;
-    animation: none;
+  color: red;
+  animation: none;
 }
 
 .iconWrapper {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ee8b05;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ee8b05;
 }
 
 .iconWrapper:hover {
-    color: red;
-    animation: none;
+  color: red;
+  animation: none;
 }

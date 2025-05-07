@@ -1,1 +1,1 @@
-export {BodyScrollController} from './BodyScrollController';
+export { BodyScrollController } from './BodyScrollController';

@@ -1,1 +1,1 @@
-export {ClearableInputWithIcon} from "./ClearableInputWithIcon";
+export { ClearableInputWithIcon } from './ClearableInputWithIcon';
